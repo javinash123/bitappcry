@@ -1,4 +1,4 @@
-import { Link, useLocation } from "wouter";
+import { Link, useLocation, useNavigate } from "wouter";
 import { 
   LayoutGrid, 
   FileText, 
@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 
 export function Sidebar() {
   const [location] = useLocation();
+  const navigate = useNavigate();
 
   const navItems = [
     { icon: LayoutGrid, label: "Dashboard", href: "/" },
@@ -30,7 +31,7 @@ export function Sidebar() {
 
   const quickActions = [
     { icon: PlusCircle, label: "Create Invoice", href: "/create-invoice" },
-    { icon: Settings, label: "Manage Items", href: "/manage-items" },
+    { icon: Settings, label: "Manage Items", href: "/items" },
   ];
 
   const accountItems = [
@@ -57,19 +58,21 @@ export function Sidebar() {
               {navItems.map((item) => {
                 const isActive = location === item.href;
                 return (
-                  <Link key={item.href} href={item.href}>
-                    <a className={cn(
+                  <Link 
+                    key={item.href} 
+                    href={item.href}
+                    className={cn(
                       "group flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
                       isActive 
                         ? "bg-primary/5 text-primary shadow-sm ring-1 ring-primary/10" 
                         : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-foreground"
-                    )}>
+                    )}
+                  >
                       <div className="flex items-center gap-3">
                         <item.icon className={cn("h-[18px] w-[18px] transition-colors", isActive ? "text-primary" : "text-sidebar-foreground/50 group-hover:text-foreground")} />
                         {item.label}
                       </div>
                       {isActive && <ChevronRight className="h-4 w-4 opacity-50" />}
-                    </a>
                   </Link>
                 );
               })}
@@ -80,13 +83,15 @@ export function Sidebar() {
             <h3 className="text-[11px] font-bold text-sidebar-foreground/50 uppercase tracking-widest mb-4 px-4 font-heading">Actions</h3>
             <nav className="space-y-1">
               {quickActions.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <a className="group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-foreground transition-all duration-200">
+                <Link 
+                  key={item.href} 
+                  href={item.href}
+                  className="group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-foreground transition-all duration-200"
+                >
                     <div className="p-1.5 rounded-lg bg-background border border-border shadow-xs group-hover:border-primary/30 group-hover:text-primary transition-colors">
                       <item.icon className="h-3.5 w-3.5" />
                     </div>
                     {item.label}
-                  </a>
                 </Link>
               ))}
             </nav>
@@ -96,11 +101,13 @@ export function Sidebar() {
             <h3 className="text-[11px] font-bold text-sidebar-foreground/50 uppercase tracking-widest mb-4 px-4 font-heading">Security</h3>
             <nav className="space-y-1">
               {accountItems.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <a className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-foreground transition-all duration-200">
+                <Link 
+                  key={item.href} 
+                  href={item.href}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-foreground transition-all duration-200"
+                >
                     <item.icon className="h-[18px] w-[18px] opacity-70" />
                     {item.label}
-                  </a>
                 </Link>
               ))}
             </nav>
@@ -120,7 +127,12 @@ export function Sidebar() {
             <p className="text-xs text-muted-foreground truncate">Merchant Account</p>
           </div>
         </div>
-        <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-9 px-2">
+        <Button 
+          variant="ghost" 
+          className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-9 px-2"
+          onClick={() => navigate("/login")}
+          data-testid="button-signout"
+        >
           <LogOut className="h-4 w-4 mr-2" />
           Sign Out
         </Button>

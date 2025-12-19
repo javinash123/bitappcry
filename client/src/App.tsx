@@ -5,12 +5,35 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/dashboard";
+import Invoices from "@/pages/invoices";
+import CreateInvoice from "@/pages/create-invoice";
+import Items from "@/pages/items";
+import Transactions from "@/pages/transactions";
+import Payouts from "@/pages/payouts";
+import Profile from "@/pages/profile";
+import KYC from "@/pages/kyc";
+import ChangePassword from "@/pages/password";
+import Login from "@/pages/login";
+import ForgotPassword from "@/pages/forgot-password";
+import Signup from "@/pages/signup";
 
 function Router() {
   return (
     <WouterRouter base={import.meta.env.BASE_URL}>
       <Switch>
-        <Route path="/" component={Dashboard} />
+        <Route path="/" component={Login} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/forgot-password" component={ForgotPassword} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/invoices" component={Invoices} />
+        <Route path="/create-invoice" component={CreateInvoice} />
+        <Route path="/items" component={Items} />
+        <Route path="/transactions" component={Transactions} />
+        <Route path="/payouts" component={Payouts} />
+        <Route path="/profile" component={Profile} />
+        <Route path="/kyc" component={KYC} />
+        <Route path="/password" component={ChangePassword} />
         <Route component={NotFound} />
       </Switch>
     </WouterRouter>

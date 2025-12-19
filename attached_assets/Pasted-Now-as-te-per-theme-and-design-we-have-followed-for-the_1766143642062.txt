@@ -1,0 +1,69 @@
+Now as te per theme and design we have followed for the dashboard we need to follow the same for the rest of the pages and we need to complete the design for them as well -
+Create all the below pages and link them with the side navigation menu options. All the pages and design should be responsive and mobile friendly. All the forms should have the basic validations.
+1. In invoices menu, i need all datatable features like pagination,searching, sorting on columns. I need this columns in table- Invoice,	Customer,	Amount,	Status,	Created,Actions. In status values can be Pending,Cancelled,Paid and Expired and should have color coding accordingly. In action i need a button for copy link,  need button for  view and need a complete button on click open popup for confirmation.
+ 
+There will be a Create invoice button on click of it open new page, In invoice create page, i need this fields - Item which is dropdown, Quantity field having only numeric value. Add Item button should be there which will add new row having Item and Quantity fields, add item will always create a new row as clicked also there should be a remove button to remove the added row. need checkbox for Apply Municipality Tax (5.00%) also another checkbox for Customer Pays Service Fee and field for Customer Email
+and another field for  Expires In which will be a dropdown. I am attaching the screenshot for content reference.
+invoicelisting.png and createinvoice.png for content reference
+2. Next menu is Items & taxes, on page show datatable with searching, sorting,pagination of items containing column Name,Price and action. action only to have delete option with confirmation popup. create item button required on the page and its form need to have three fields Name mandatory field,Base Price (AED) mandatory field,Description optional field. and show Global Taxes details having this information 
+VAT 5.00%
+Municipality (optional) 5.00%
+Municipality tax can be toggled per invoice.
+check the attached image with name itemtaxes.png for content reference
+3. Next menu is Transactions, show Available Balance on top,  In Transactions table we need to have listing, pagination,searching, sorting and dropdown of status for filter. listing should contain columns Transaction,Invoice,Amount,Cryptocurrency,Status	Date colum. status should be show in color like Expired, Finished. 
+check the attached image transaction.png for content reference
+4. Next menu is Payout on top need to show Available balance: 52.50 AED and the pending request amount. then a listing as datatable with searching, sorting, pagination having columns Date requested, amount, status, bank account, processed by, processed date. 
+Below it we need to have this information-
+ 
+Payout Information
+Payout Process:
+Minimum payout: 100.00 AED
+Manual processing by our team
+Processing time: 7 business days
+Transfers to your active bank account
+A standard AED 15 processing fee applies to each payout.
+ 
+Status Meanings:
+Pending: Request submitted, awaiting review
+Processing: Being processed by our team
+Completed: Successfully transferred to your account
+Rejected: Request declined (contact support)
+ 
+check the attached payout.png image for content reference
+5.  Next menu is Business Profile page
+In the form following fields will come up-
+Business Information
+First Name
+Last Name
+Business Name
+Business Address
+Business Phone
+Website
+Business Description
+Business Logo
+Max file size: 5MB
+Formats: JPG, PNG, GIF, JPEG
+KYC Status
+✅ Verified Status
+View KYC button
+ 
+Bank Accounts form to add new bank with fields
+Bank Name, Account Holder Name, Account Number, IBAN, Swift Code
+Add a bank account to receive payouts from your transactions
+ 
+below that show a datatable with all the bank details added with all columns of bank
+ 
+below that show the Bank Account Information
+Bank accounts are used for receiving payouts from your transactions
+Only active accounts can receive payouts
+Ensure account details are accurate to avoid payment delays
+You can have multiple bank accounts but only one can be active at a time
+Minimum payout amount and processing times may apply
+ 
+check attached image businessprofile.png for content
+ 
+6. Next menu is KYC verification
+check the attached image kyc.png for content
+ 
+7. Next menu is Change Password
+check the attached image changepassword.png for content
