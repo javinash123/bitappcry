@@ -3,7 +3,7 @@ import { Menu, Bell, X } from "lucide-react";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -19,6 +19,7 @@ const mockItems = [
 ];
 
 export default function CreateInvoice() {
+  const [, setLocation] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [items, setItems] = useState([{ itemId: "", quantity: "1" }]);
   const [municipalityTax, setMunicipalityTax] = useState(false);
@@ -55,11 +56,8 @@ export default function CreateInvoice() {
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      setItems([{ itemId: "", quantity: "1" }]);
-      setCustomerEmail("");
-      setMunicipalityTax(false);
-      setCustomerPaysFee(true);
-      setExpiresIn("24");
+      // Redirect to success page
+      setLocation("/invoice-success");
     }
   };
 

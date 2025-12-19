@@ -7,6 +7,8 @@ import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/dashboard";
 import Invoices from "@/pages/invoices";
 import CreateInvoice from "@/pages/create-invoice";
+import InvoiceSuccess from "@/pages/invoice-success";
+import InvoiceDetail from "@/pages/invoice-detail";
 import Items from "@/pages/items";
 import Transactions from "@/pages/transactions";
 import Payouts from "@/pages/payouts";
@@ -28,6 +30,8 @@ function Router() {
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/invoices" component={Invoices} />
         <Route path="/create-invoice" component={CreateInvoice} />
+        <Route path="/invoice-success" component={InvoiceSuccess} />
+        <Route path="/invoice/:id" component={InvoiceDetail} />
         <Route path="/items" component={Items} />
         <Route path="/transactions" component={Transactions} />
         <Route path="/payouts" component={Payouts} />
