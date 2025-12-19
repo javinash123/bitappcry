@@ -40,7 +40,10 @@ export default function Invoices() {
   const filteredData = useMemo(() => {
     let result = mockInvoices.filter(inv =>
       inv.invoice.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      inv.customer.toLowerCase().includes(searchTerm.toLowerCase())
+      inv.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      inv.amount.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+      inv.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      inv.created.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     result.sort((a, b) => {

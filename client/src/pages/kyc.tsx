@@ -86,9 +86,6 @@ export default function KYC() {
                   <span className="font-semibold text-foreground">Verified on:</span> September 6, 2025
                 </p>
               </div>
-              <Button className="bg-primary hover:bg-primary/90 h-10" data-testid="button-view-kyc">
-                View Full Details
-              </Button>
             </CardContent>
           </Card>
         </main>

@@ -41,8 +41,12 @@ export default function Payouts() {
 
   const filteredData = useMemo(() => {
     let result = mockPayouts.filter(payout =>
+      payout.dateRequested.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      payout.amount.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+      payout.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
       payout.bankAccount.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      payout.status.toLowerCase().includes(searchTerm.toLowerCase())
+      payout.processedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      payout.processedDate.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     result.sort((a, b) => {
@@ -262,16 +266,16 @@ export default function Payouts() {
                 <TableBody>
                   {paginatedData.map((payout) => (
                     <TableRow key={payout.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-payout-${payout.id}`}>
-                      <TableCell className="text-foreground text-sm">{payout.dateRequested}</TableCell>
+                      <TableCell className="text-foreground">{payout.dateRequested}</TableCell>
                       <TableCell className="text-right text-foreground font-medium">{payout.amount} AED</TableCell>
                       <TableCell>
                         <Badge className={`${statusColors[payout.status as keyof typeof statusColors]} border`}>
                           {payout.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-foreground/70 text-sm">{payout.bankAccount}</TableCell>
-                      <TableCell className="text-foreground/70 text-sm">{payout.processedBy}</TableCell>
-                      <TableCell className="text-foreground/70 text-sm">{payout.processedDate}</TableCell>
+                      <TableCell className="text-foreground/70">{payout.bankAccount}</TableCell>
+                      <TableCell className="text-foreground/70">{payout.processedBy}</TableCell>
+                      <TableCell className="text-foreground/70">{payout.processedDate}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

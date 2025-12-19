@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "wouter";
+import { Link, useLocation } from "wouter";
 import { 
   LayoutGrid, 
   FileText, 
@@ -17,8 +17,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 export function Sidebar() {
-  const [location] = useLocation();
-  const navigate = useNavigate();
+  const [location, setLocation] = useLocation();
 
   const navItems = [
     { icon: LayoutGrid, label: "Dashboard", href: "/" },
@@ -130,7 +129,7 @@ export function Sidebar() {
         <Button 
           variant="ghost" 
           className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-9 px-2"
-          onClick={() => navigate("/login")}
+          onClick={() => setLocation("/login")}
           data-testid="button-signout"
         >
           <LogOut className="h-4 w-4 mr-2" />

@@ -39,7 +39,11 @@ export default function Transactions() {
   const filteredData = useMemo(() => {
     let result = mockTransactions.filter(tx => {
       const matchesSearch = tx.transaction.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           tx.invoice.toLowerCase().includes(searchTerm.toLowerCase());
+                           tx.invoice.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           tx.amount.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           tx.crypto.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           tx.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           tx.date.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesStatus = statusFilter === "all" || tx.status.toLowerCase() === statusFilter.toLowerCase();
       return matchesSearch && matchesStatus;
     });
@@ -210,16 +214,16 @@ export default function Transactions() {
                 <TableBody>
                   {paginatedData.map((tx) => (
                     <TableRow key={tx.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-transaction-${tx.id}`}>
-                      <TableCell className="font-mono font-medium text-foreground text-sm">{tx.transaction}</TableCell>
-                      <TableCell className="font-mono text-sm text-foreground/70">{tx.invoice}</TableCell>
+                      <TableCell className="font-medium text-foreground">{tx.transaction}</TableCell>
+                      <TableCell className="text-foreground/70">{tx.invoice}</TableCell>
                       <TableCell className="text-right text-foreground font-medium">{tx.amount.toFixed(2)} AED</TableCell>
-                      <TableCell className="text-foreground/70 text-sm">{tx.crypto}</TableCell>
+                      <TableCell className="text-foreground/70">{tx.crypto}</TableCell>
                       <TableCell>
                         <Badge className={`${statusColors[tx.status as keyof typeof statusColors]} border`}>
                           {tx.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-foreground/70 text-sm">{tx.date}</TableCell>
+                      <TableCell className="text-foreground/70">{tx.date}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

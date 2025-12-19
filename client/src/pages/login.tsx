@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,8 +8,10 @@ import { Link } from "wouter";
 import { Mail, Lock } from "lucide-react";
 
 export default function Login() {
+  const [, navigate] = useLocation();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -22,7 +25,10 @@ export default function Login() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      setFormData({ email: "", password: "" });
+      setIsLoading(true);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
     }
   };
 
@@ -52,6 +58,7 @@ export default function Login() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   data-testid="input-login-email"
+                  disabled={isLoading}
                 />
               </div>
               {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
@@ -69,6 +76,7 @@ export default function Login() {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   data-testid="input-login-password"
+                  disabled={isLoading}
                 />
               </div>
               {errors.password && <p className="text-xs text-destructive">{errors.password}</p>}
@@ -82,8 +90,13 @@ export default function Login() {
               </Link>
             </div>
 
-            <Button type="submit" className="w-full bg-primary hover:bg-primary/90 h-11 text-base" data-testid="button-login">
-              Sign In
+            <Button 
+              type="submit" 
+              className="w-full bg-primary hover:bg-primary/90 h-11 text-base" 
+              data-testid="button-login"
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing In..." : "Sign In"}
             </Button>
           </form>
 
