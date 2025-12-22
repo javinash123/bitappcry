@@ -129,50 +129,50 @@ export default function Payouts() {
           </div>
         </header>
 
-        <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full space-y-6">
+        <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-7xl mx-auto w-full space-y-4 sm:space-y-6 overflow-x-hidden">
           <div className="flex justify-between items-start md:items-center gap-4 flex-col md:flex-row">
             <div>
-              <h2 className="text-2xl font-bold font-heading">Payout History</h2>
-              <p className="text-muted-foreground text-sm mt-1">Track all your payout requests and their status</p>
+              <h2 className="text-xl sm:text-2xl font-bold font-heading">Payout History</h2>
+              <p className="text-muted-foreground text-xs sm:text-sm mt-1">Track all your payout requests and their status</p>
             </div>
-            <div className="flex gap-3 items-end">
-              <div className="text-right">
-                <p className="text-xs text-muted-foreground">Balance</p>
-                <p className="font-bold text-foreground text-lg">41.50 AED</p>
-                <p className="text-xs text-amber-600 font-medium">Pending: 11.00 AED</p>
+            <div className="flex flex-row md:flex-row gap-4 items-center justify-between w-full md:w-auto">
+              <div className="text-left md:text-right">
+                <p className="text-[10px] sm:text-xs text-muted-foreground">Balance</p>
+                <p className="font-bold text-foreground text-base sm:text-lg">41.50 AED</p>
+                <p className="text-[10px] sm:text-xs text-amber-600 font-medium whitespace-nowrap">Pending: 11.00 AED</p>
               </div>
               <Dialog open={requestDialogOpen} onOpenChange={setRequestDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-primary hover:bg-primary/90 h-10" data-testid="button-request-payout">
+                  <Button className="bg-primary hover:bg-primary/90 h-9 sm:h-10 text-xs sm:text-sm" data-testid="button-request-payout">
                     Request Payout
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Request Payout</DialogTitle>
-                    <DialogDescription>Request a payout to your bank account</DialogDescription>
+                <DialogContent className="max-w-[95vw] sm:max-w-md rounded-2xl p-4 sm:p-6">
+                  <DialogHeader className="mb-2">
+                    <DialogTitle className="text-lg">Request Payout</DialogTitle>
+                    <DialogDescription className="text-xs">Request a payout to your bank account</DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="payout-amount" className="text-sm font-medium">Amount (AED) *</Label>
+                      <Label htmlFor="payout-amount" className="text-xs sm:text-sm font-medium">Amount (AED) *</Label>
                       <Input
                         id="payout-amount"
                         type="number"
                         placeholder="0.00"
                         min="100"
-                        className="h-10 border-2 border-border/50 focus:border-primary/50"
+                        className="h-9 sm:h-10 border-2 border-border/50 focus:border-primary/50 text-sm"
                         value={requestForm.amount}
                         onChange={(e) => setRequestForm({ ...requestForm, amount: e.target.value })}
                         data-testid="input-payout-amount"
                       />
-                      {requestErrors.amount && <p className="text-xs text-destructive">{requestErrors.amount}</p>}
-                      <p className="text-xs text-muted-foreground">Available balance: 52.50 AED</p>
+                      {requestErrors.amount && <p className="text-[10px] text-destructive">{requestErrors.amount}</p>}
+                      <p className="text-[10px] text-muted-foreground">Available balance: 52.50 AED</p>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="bank-account" className="text-sm font-medium">Bank Account *</Label>
+                      <Label htmlFor="bank-account" className="text-xs sm:text-sm font-medium">Bank Account *</Label>
                       <Select value={requestForm.bankAccount} onValueChange={(val) => setRequestForm({ ...requestForm, bankAccount: val })}>
-                        <SelectTrigger className="h-10 border-2 border-border/50 focus:border-primary/50" data-testid="select-payout-bank">
+                        <SelectTrigger className="h-9 sm:h-10 border-2 border-border/50 focus:border-primary/50 text-sm" data-testid="select-payout-bank">
                           <SelectValue placeholder="Select bank account" />
                         </SelectTrigger>
                         <SelectContent>
@@ -180,25 +180,25 @@ export default function Payouts() {
                           <SelectItem value="bank2">FAB ****2222</SelectItem>
                         </SelectContent>
                       </Select>
-                      {requestErrors.bankAccount && <p className="text-xs text-destructive">{requestErrors.bankAccount}</p>}
+                      {requestErrors.bankAccount && <p className="text-[10px] text-destructive">{requestErrors.bankAccount}</p>}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="payout-notes" className="text-sm font-medium">Notes</Label>
+                      <Label htmlFor="payout-notes" className="text-xs sm:text-sm font-medium">Notes</Label>
                       <Textarea
                         id="payout-notes"
                         placeholder="Add any notes (optional)"
-                        className="h-24 border-2 border-border/50 focus:border-primary/50 resize-none"
+                        className="h-20 sm:h-24 border-2 border-border/50 focus:border-primary/50 resize-none text-sm"
                         value={requestForm.notes}
                         onChange={(e) => setRequestForm({ ...requestForm, notes: e.target.value })}
                         data-testid="textarea-payout-notes"
                       />
                     </div>
 
-                    <div className="flex gap-3 justify-end pt-2">
-                      <Button variant="outline" onClick={() => setRequestDialogOpen(false)}>Cancel</Button>
-                      <Button className="bg-primary hover:bg-primary/90" onClick={handleRequestPayout} data-testid="button-confirm-payout">
-                        Request Payout
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-end pt-2">
+                      <Button variant="outline" onClick={() => setRequestDialogOpen(false)} className="h-9 sm:h-10 order-2 sm:order-1">Cancel</Button>
+                      <Button className="bg-primary hover:bg-primary/90 h-9 sm:h-10 order-1 sm:order-2" onClick={handleRequestPayout} data-testid="button-confirm-payout">
+                        Confirm Payout
                       </Button>
                     </div>
                   </div>
@@ -209,10 +209,10 @@ export default function Payouts() {
 
           {/* Search Bar */}
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
             <Input
-              placeholder="Search by bank account or status..."
-              className="pl-10 h-11 border-2 border-border/50 bg-background/50 focus:border-primary/50 transition-colors"
+              placeholder="Search history..."
+              className="pl-9 sm:pl-10 h-10 sm:h-11 border-2 border-border/50 bg-background/50 focus:border-primary/50 transition-colors text-sm"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -222,60 +222,58 @@ export default function Payouts() {
             />
           </div>
 
-          {/* Payouts Table */}
+          {/* Payouts Table Container */}
           <div className="border border-border/50 rounded-xl overflow-hidden bg-card shadow-sm">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
                     <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
+                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-[10px] sm:text-xs" 
                       onClick={() => handleSort("dateRequested")}
                       data-testid="header-date-requested"
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
                         Date Requested
                         <SortIcon field="dateRequested" />
                       </div>
                     </TableHead>
                     <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right" 
+                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right text-[10px] sm:text-xs" 
                       onClick={() => handleSort("amount")}
                       data-testid="header-amount"
                     >
-                      <div className="flex items-center gap-2 justify-end">
+                      <div className="flex items-center gap-1 justify-end">
                         Amount
                         <SortIcon field="amount" />
                       </div>
                     </TableHead>
                     <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
+                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-[10px] sm:text-xs" 
                       onClick={() => handleSort("status")}
                       data-testid="header-status"
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
                         Status
                         <SortIcon field="status" />
                       </div>
                     </TableHead>
-                    <TableHead className="font-semibold text-foreground">Bank Account</TableHead>
-                    <TableHead className="font-semibold text-foreground">Processed By</TableHead>
-                    <TableHead className="font-semibold text-foreground">Processed Date</TableHead>
+                    <TableHead className="font-semibold text-foreground hidden md:table-cell text-[10px] sm:text-xs">Bank Account</TableHead>
+                    <TableHead className="font-semibold text-foreground hidden sm:table-cell text-[10px] sm:text-xs">Processed By</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {paginatedData.map((payout) => (
                     <TableRow key={payout.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-payout-${payout.id}`}>
-                      <TableCell className="text-foreground">{payout.dateRequested}</TableCell>
-                      <TableCell className="text-right text-foreground font-medium">{payout.amount} AED</TableCell>
-                      <TableCell>
-                        <Badge className={`${statusColors[payout.status as keyof typeof statusColors]} border`}>
+                      <TableCell className="text-foreground text-[10px] sm:text-xs py-2 sm:py-4">{payout.dateRequested}</TableCell>
+                      <TableCell className="text-right text-foreground font-medium text-[10px] sm:text-xs py-2 sm:py-4">{payout.amount} AED</TableCell>
+                      <TableCell className="py-2 sm:py-4">
+                        <Badge className={`${statusColors[payout.status as keyof typeof statusColors]} border text-[9px] sm:text-[10px] px-1.5 py-0`}>
                           {payout.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-foreground/70">{payout.bankAccount}</TableCell>
-                      <TableCell className="text-foreground/70">{payout.processedBy}</TableCell>
-                      <TableCell className="text-foreground/70">{payout.processedDate}</TableCell>
+                      <TableCell className="text-foreground/70 hidden md:table-cell text-[10px] sm:text-xs py-2 sm:py-4">{payout.bankAccount}</TableCell>
+                      <TableCell className="text-foreground/70 hidden sm:table-cell text-[10px] sm:text-xs py-2 sm:py-4">{payout.processedBy}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -312,29 +310,27 @@ export default function Payouts() {
 
           {/* Payout Information */}
           <Card className="border-2 border-primary/20 bg-primary/5">
-            <CardHeader className="flex flex-row items-start gap-3 pb-4">
-              <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-              <CardTitle className="text-lg">Payout Information</CardTitle>
+            <CardHeader className="flex flex-row items-start gap-3 pb-4 p-4 sm:p-6">
+              <Lightbulb className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0 mt-0.5" />
+              <CardTitle className="text-base sm:text-lg">Information</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="p-4 sm:p-6 pt-0 space-y-6">
               <div>
-                <h4 className="font-semibold text-foreground mb-3">Payout Process:</h4>
-                <ul className="space-y-2 text-sm text-foreground/70">
-                  <li className="flex gap-2"><span className="text-primary">•</span> Minimum payout: 100.00 AED</li>
-                  <li className="flex gap-2"><span className="text-primary">•</span> Manual processing by our team</li>
-                  <li className="flex gap-2"><span className="text-primary">•</span> Processing time: 7 business days</li>
-                  <li className="flex gap-2"><span className="text-primary">•</span> Transfers to your active bank account</li>
-                  <li className="flex gap-2"><span className="text-primary">•</span> A standard AED 15 processing fee applies to each payout</li>
+                <h4 className="font-semibold text-foreground mb-3 text-xs sm:text-sm">Payout Process:</h4>
+                <ul className="space-y-2 text-[10px] sm:text-sm text-foreground/70">
+                  <li className="flex gap-2"><span className="text-primary">•</span> Min payout: 100.00 AED</li>
+                  <li className="flex gap-2"><span className="text-primary">•</span> Processing: 7 business days</li>
+                  <li className="flex gap-2"><span className="text-primary">•</span> Fee: 15 AED processing fee applies</li>
                 </ul>
               </div>
               <div className="border-t border-border/30 pt-6">
-                <h4 className="font-semibold text-foreground mb-3">Status Meanings:</h4>
-                <ul className="space-y-2 text-sm text-foreground/70">
-                  <li><span className="font-medium text-amber-600">Pending:</span> Request submitted, awaiting review</li>
-                  <li><span className="font-medium text-blue-600">Processing:</span> Being processed by our team</li>
-                  <li><span className="font-medium text-emerald-600">Completed:</span> Successfully transferred to your account</li>
-                  <li><span className="font-medium text-red-600">Rejected:</span> Request declined (contact support)</li>
-                </ul>
+                <h4 className="font-semibold text-foreground mb-3 text-xs sm:text-sm">Status Meanings:</h4>
+                <div className="grid grid-cols-2 gap-2 text-[10px] sm:text-sm text-foreground/70">
+                  <div className="flex flex-col"><span className="font-medium text-amber-600">Pending</span><span>Awaiting review</span></div>
+                  <div className="flex flex-col"><span className="font-medium text-blue-600">Processing</span><span>In progress</span></div>
+                  <div className="flex flex-col"><span className="font-medium text-emerald-600">Completed</span><span>Transferred</span></div>
+                  <div className="flex flex-col"><span className="font-medium text-red-600">Rejected</span><span>Declined</span></div>
+                </div>
               </div>
             </CardContent>
           </Card>

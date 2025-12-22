@@ -39,8 +39,8 @@ export function Sidebar() {
   ];
 
   return (
-    <div className="w-72 bg-sidebar h-screen flex flex-col fixed left-0 top-0 border-r border-sidebar-border/60 z-50 transition-all duration-300">
-      <div className="p-8 pb-6">
+    <div className="w-72 bg-sidebar h-screen flex flex-col fixed left-0 top-0 border-r border-sidebar-border/60 z-50 transition-all duration-300 overflow-hidden">
+      <div className="p-8 pb-6 flex-shrink-0">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
             <span className="text-white font-bold text-xl">S</span>
@@ -50,7 +50,7 @@ export function Sidebar() {
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-2 custom-scrollbar">
-        <div className="space-y-6">
+        <div className="space-y-6 pb-4">
           <div>
             <h3 className="text-[11px] font-bold text-sidebar-foreground/50 uppercase tracking-widest mb-4 px-4 font-heading">Menu</h3>
             <nav className="space-y-1">
@@ -114,7 +114,7 @@ export function Sidebar() {
         </div>
       </div>
 
-      <div className="p-4 m-4 mt-2 rounded-2xl bg-sidebar-accent/30 border border-sidebar-border">
+      <div className="p-4 m-4 mt-2 rounded-2xl bg-sidebar-accent/30 border border-sidebar-border flex-shrink-0">
         <div className="flex items-center gap-3 mb-3">
           <div className="h-10 w-10 rounded-full bg-linear-to-br from-primary to-purple-400 p-[2px] ring-2 ring-background">
              <div className="h-full w-full rounded-full bg-white flex items-center justify-center text-primary font-bold text-sm">

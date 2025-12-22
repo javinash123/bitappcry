@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/layout/Sidebar";
-import { Menu, Bell, Search, ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
+import { Menu, Bell, Search, ChevronUp, ChevronDown, ChevronsUpDown, Copy, ChevronRight } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
@@ -112,14 +112,14 @@ export default function Invoices() {
           </div>
         </header>
 
-        <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full space-y-6">
-          <div className="flex justify-between items-center">
+        <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-7xl mx-auto w-full space-y-4 sm:space-y-6 overflow-x-hidden">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h2 className="text-2xl font-bold font-heading">Invoices</h2>
-              <p className="text-muted-foreground mt-1">Showing {paginatedData.length} of {filteredData.length} invoices</p>
+              <h2 className="text-xl sm:text-2xl font-bold font-heading">Invoices</h2>
+              <p className="text-muted-foreground mt-1 text-xs sm:text-sm">Showing {paginatedData.length} of {filteredData.length} invoices</p>
             </div>
-            <Link href="/create-invoice">
-              <Button className="bg-primary hover:bg-primary/90" data-testid="button-create-invoice">
+            <Link href="/create-invoice" className="w-full sm:w-auto">
+              <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90" data-testid="button-create-invoice">
                 Create Invoice
               </Button>
             </Link>
@@ -127,10 +127,10 @@ export default function Invoices() {
 
           {/* Search Bar */}
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
             <Input
-              placeholder="Search by invoice ID or customer name..."
-              className="pl-10 h-11 border-2 border-border/50 bg-background/50 focus:border-primary/50 transition-colors"
+              placeholder="Search invoices..."
+              className="pl-9 sm:pl-10 h-10 sm:h-11 border-2 border-border/50 bg-background/50 focus:border-primary/50 transition-colors text-sm"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -140,116 +140,89 @@ export default function Invoices() {
             />
           </div>
 
-          {/* Table */}
+          {/* Table Container */}
           <div className="border border-border/50 rounded-xl overflow-hidden bg-card shadow-sm">
-            <div className="w-full overflow-x-auto scrollbar-hide">
-              <div className="min-w-full">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
-                      <TableHead 
-                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-xs sm:text-sm" 
-                        onClick={() => handleSort("invoice")}
-                        data-testid="header-invoice"
-                      >
-                        <div className="flex items-center gap-1">
-                          Invoice
-                          <SortIcon field="invoice" />
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
+                    <TableHead 
+                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-[10px] sm:text-xs" 
+                      onClick={() => handleSort("invoice")}
+                      data-testid="header-invoice"
+                    >
+                      <div className="flex items-center gap-1">
+                        Invoice
+                        <SortIcon field="invoice" />
+                      </div>
+                    </TableHead>
+                    <TableHead 
+                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors hidden sm:table-cell text-[10px] sm:text-xs" 
+                      onClick={() => handleSort("customer")}
+                      data-testid="header-customer"
+                    >
+                      <div className="flex items-center gap-1">
+                        Customer
+                        <SortIcon field="customer" />
+                      </div>
+                    </TableHead>
+                    <TableHead 
+                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right text-[10px] sm:text-xs" 
+                      onClick={() => handleSort("amount")}
+                      data-testid="header-amount"
+                    >
+                      <div className="flex items-center gap-1 justify-end">
+                        Amount
+                        <SortIcon field="amount" />
+                      </div>
+                    </TableHead>
+                    <TableHead 
+                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-[10px] sm:text-xs" 
+                      onClick={() => handleSort("status")}
+                      data-testid="header-status"
+                    >
+                      <div className="flex items-center gap-1">
+                        Status
+                        <SortIcon field="status" />
+                      </div>
+                    </TableHead>
+                    <TableHead className="font-semibold text-foreground text-[10px] sm:text-xs">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paginatedData.map((invoice) => (
+                    <TableRow key={invoice.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-invoice-${invoice.id}`}>
+                      <TableCell className="font-medium text-foreground text-[10px] sm:text-xs py-2 sm:py-4">{invoice.invoice}</TableCell>
+                      <TableCell className="text-foreground/70 hidden sm:table-cell text-[10px] sm:text-xs py-2 sm:py-4">{invoice.customer}</TableCell>
+                      <TableCell className="text-right text-foreground font-medium text-[10px] sm:text-xs py-2 sm:py-4">{invoice.amount.toLocaleString()} AED</TableCell>
+                      <TableCell className="py-2 sm:py-4">
+                        <Badge className={`${statusColors[invoice.status as keyof typeof statusColors]} border text-[9px] sm:text-[10px] px-1.5 py-0`}>
+                          {invoice.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="py-2 sm:py-4">
+                        <div className="flex gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 sm:h-8 sm:w-8 hover:bg-primary/10 hover:text-primary"
+                            data-testid={`button-copy-${invoice.id}`}
+                            onClick={() => navigator.clipboard.writeText(invoice.invoice)}
+                            title="Copy ID"
+                          >
+                            <Copy className="h-3.5 w-3.5" />
+                          </Button>
+                          <Link href={`/invoice/${invoice.id}`}>
+                            <Button variant="ghost" size="icon" className="h-7 w-7 sm:h-8 sm:w-8 hover:bg-primary/10 hover:text-primary" data-testid={`button-view-${invoice.id}`} title="View Details">
+                              <ChevronRight className="h-4 w-4" />
+                            </Button>
+                          </Link>
                         </div>
-                      </TableHead>
-                      <TableHead 
-                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors hidden sm:table-cell text-xs sm:text-sm" 
-                        onClick={() => handleSort("customer")}
-                        data-testid="header-customer"
-                      >
-                        <div className="flex items-center gap-1">
-                          Customer
-                          <SortIcon field="customer" />
-                        </div>
-                      </TableHead>
-                      <TableHead 
-                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right text-xs sm:text-sm" 
-                        onClick={() => handleSort("amount")}
-                        data-testid="header-amount"
-                      >
-                        <div className="flex items-center gap-1 justify-end">
-                          Amount
-                          <SortIcon field="amount" />
-                        </div>
-                      </TableHead>
-                      <TableHead 
-                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-xs sm:text-sm" 
-                        onClick={() => handleSort("status")}
-                        data-testid="header-status"
-                      >
-                        <div className="flex items-center gap-1">
-                          Status
-                          <SortIcon field="status" />
-                        </div>
-                      </TableHead>
-                      <TableHead 
-                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors hidden md:table-cell text-xs sm:text-sm" 
-                        onClick={() => handleSort("created")}
-                        data-testid="header-created"
-                      >
-                        <div className="flex items-center gap-1">
-                          Created
-                          <SortIcon field="created" />
-                        </div>
-                      </TableHead>
-                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Actions</TableHead>
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {paginatedData.map((invoice) => (
-                      <TableRow key={invoice.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-invoice-${invoice.id}`}>
-                        <TableCell className="font-medium text-foreground text-xs sm:text-sm">{invoice.invoice}</TableCell>
-                        <TableCell className="text-foreground/70 hidden sm:table-cell text-xs sm:text-sm">{invoice.customer}</TableCell>
-                        <TableCell className="text-right text-foreground font-medium text-xs sm:text-sm">{invoice.amount.toLocaleString()} AED</TableCell>
-                        <TableCell className="text-xs sm:text-sm">
-                          <Badge className={`${statusColors[invoice.status as keyof typeof statusColors]} border text-xs`}>
-                            {invoice.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-foreground/70 hidden md:table-cell text-xs">{invoice.created}</TableCell>
-                        <TableCell>
-                          <div className="flex gap-0.5">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-7 px-1.5 text-xs hover:bg-primary/10 hover:text-primary"
-                              data-testid={`button-copy-${invoice.id}`}
-                              onClick={() => navigator.clipboard.writeText(invoice.invoice)}
-                            >
-                              Copy
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs hover:bg-primary/10 hover:text-primary hidden sm:inline-flex" data-testid={`button-view-${invoice.id}`}>
-                              View
-                            </Button>
-                            <Dialog open={completeDialogOpen} onOpenChange={setCompleteDialogOpen}>
-                              <DialogTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs hover:bg-green-500/10 hover:text-green-700 hidden sm:inline-flex" data-testid={`button-complete-${invoice.id}`}>
-                                  Complete
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>Complete Invoice</DialogTitle>
-                                  <DialogDescription>Are you sure you want to mark this invoice as complete?</DialogDescription>
-                                </DialogHeader>
-                                <div className="flex gap-3 justify-end">
-                                  <Button variant="outline" onClick={() => setCompleteDialogOpen(false)}>Cancel</Button>
-                                  <Button className="bg-primary hover:bg-primary/90" onClick={() => setCompleteDialogOpen(false)}>Confirm</Button>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           </div>
 
