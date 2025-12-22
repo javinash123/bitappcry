@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface SplitPaymentModalProps {
   isOpen: boolean;
@@ -120,6 +121,7 @@ export default function InvoiceDetail() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [selectedTip, setSelectedTip] = useState<string | null>(null);
   const [customTip, setCustomTip] = useState("");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("crypto");
 
   // Mock invoice data
   const companyName = "Webcreateres";
@@ -183,19 +185,19 @@ export default function InvoiceDetail() {
           </div>
         </header>
 
-        <main className="flex-1 p-6 md:p-8 max-w-2xl mx-auto w-full space-y-6">
+        <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-2xl mx-auto w-full space-y-4 sm:space-y-6">
           {/* Company Header */}
           <Card className="border-2 border-border/50">
-            <CardContent className="pt-6 flex items-center gap-4">
+            <CardContent className="pt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <img
                 src={companyLogo}
                 alt={companyName}
-                className="w-16 h-16 rounded-lg border border-border/30 object-cover"
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg border border-border/30 object-cover"
                 data-testid="img-company-logo"
               />
-              <div>
-                <h2 className="text-xl font-bold font-heading">{companyName}</h2>
-                <p className="text-sm text-muted-foreground">Invoice {invoiceId}</p>
+              <div className="min-w-0">
+                <h2 className="text-lg sm:text-xl font-bold font-heading truncate">{companyName}</h2>
+                <p className="text-xs sm:text-sm text-muted-foreground">Invoice {invoiceId}</p>
               </div>
             </CardContent>
           </Card>
@@ -250,10 +252,10 @@ export default function InvoiceDetail() {
           </Card>
 
           {/* Actions */}
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Button
               onClick={() => setSplitModalOpen(true)}
-              className="w-full bg-primary hover:bg-primary/90 h-10 font-semibold"
+              className="w-full bg-primary hover:bg-primary/90 h-9 sm:h-10 font-semibold text-sm sm:text-base"
               data-testid="button-split-bill"
             >
               SPLIT BILL
@@ -261,7 +263,7 @@ export default function InvoiceDetail() {
 
             <Button
               variant="outline"
-              className="w-full border-2 border-primary text-primary hover:bg-primary/5 h-10 font-semibold"
+              className="w-full border-2 border-primary text-primary hover:bg-primary/5 h-9 sm:h-10 font-semibold text-sm sm:text-base"
               data-testid="button-mark-completed"
             >
               MARK COMPLETED
@@ -276,11 +278,11 @@ export default function InvoiceDetail() {
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">All proceeds go directly to our staff</p>
 
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 <Button
                   variant={selectedTip === "10" ? "default" : "outline"}
                   onClick={() => handleSelectTip(10)}
-                  className={`flex-1 h-10 ${selectedTip === "10" ? "bg-primary hover:bg-primary/90" : "border-2"}`}
+                  className={`flex-1 min-w-20 h-9 sm:h-10 text-xs sm:text-sm ${selectedTip === "10" ? "bg-primary hover:bg-primary/90" : "border-2"}`}
                   data-testid="button-tip-10"
                 >
                   10%
@@ -288,7 +290,7 @@ export default function InvoiceDetail() {
                 <Button
                   variant={selectedTip === "25" ? "default" : "outline"}
                   onClick={() => handleSelectTip(25)}
-                  className={`flex-1 h-10 ${selectedTip === "25" ? "bg-primary hover:bg-primary/90" : "border-2"}`}
+                  className={`flex-1 min-w-20 h-9 sm:h-10 text-xs sm:text-sm ${selectedTip === "25" ? "bg-primary hover:bg-primary/90" : "border-2"}`}
                   data-testid="button-tip-25"
                 >
                   25%
@@ -296,7 +298,7 @@ export default function InvoiceDetail() {
                 <Button
                   variant={selectedTip === "custom" ? "default" : "outline"}
                   onClick={() => setSelectedTip("custom")}
-                  className={`flex-1 h-10 ${selectedTip === "custom" ? "bg-primary hover:bg-primary/90" : "border-2"}`}
+                  className={`flex-1 min-w-24 h-9 sm:h-10 text-xs sm:text-sm ${selectedTip === "custom" ? "bg-primary hover:bg-primary/90" : "border-2"}`}
                   data-testid="button-tip-custom"
                 >
                   Custom Tip
@@ -304,17 +306,17 @@ export default function InvoiceDetail() {
               </div>
 
               {selectedTip === "custom" && (
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-col sm:flex-row">
                   <Input
                     type="number"
                     placeholder="5.25"
                     value={customTip}
                     onChange={(e) => setCustomTip(e.target.value)}
-                    className="flex-1 border-2 border-border/50 focus:border-primary/50 h-10 text-sm"
+                    className="flex-1 border-2 border-border/50 focus:border-primary/50 h-9 sm:h-10 text-sm"
                     data-testid="input-custom-tip"
                   />
                   <Button
-                    className="bg-primary hover:bg-primary/90 h-10 px-6"
+                    className="bg-primary hover:bg-primary/90 h-9 sm:h-10 px-4 sm:px-6 text-sm sm:text-base"
                     data-testid="button-update-tip"
                   >
                     Update
@@ -333,38 +335,116 @@ export default function InvoiceDetail() {
             <CardHeader className="pb-4">
               <CardTitle className="text-sm uppercase tracking-wide">Payment Method</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <Button
-                variant="outline"
-                className="w-full h-12 border-2 border-primary/50 hover:bg-primary/5 flex flex-col items-start p-3 justify-start"
-                data-testid="button-payment-crypto"
-              >
-                <span className="text-sm font-semibold text-primary">Crypto</span>
-                <span className="text-xs text-muted-foreground">Pay with supported cryptocurrencies</span>
-              </Button>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <Label className="text-sm font-medium">Select Payment Method</Label>
+                <RadioGroup value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod}>
+                  <label
+                    htmlFor="crypto"
+                    className={`relative flex items-start gap-4 p-4 rounded-xl transition-all duration-300 cursor-pointer border-2 ${
+                      selectedPaymentMethod === "crypto"
+                        ? "border-primary bg-primary/8 shadow-sm"
+                        : "border-border/30 bg-white/40 dark:bg-white/5"
+                    } hover:border-primary/50 hover:shadow-md`}
+                  >
+                    <div className="flex items-center pt-1">
+                      <RadioGroupItem value="crypto" id="crypto" data-testid="radio-crypto" className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-foreground">Crypto</p>
+                      <p className="text-xs text-muted-foreground mt-1">Pay with supported cryptocurrencies</p>
+                    </div>
+                  </label>
 
-              <div className="space-y-3 opacity-50 pointer-events-none">
-                <div className="p-3 border border-border/30 rounded-md">
-                  <p className="text-sm font-semibold text-foreground">Apple Pay</p>
-                  <p className="text-xs text-muted-foreground">Coming soon</p>
-                </div>
+                  <label
+                    htmlFor="apple"
+                    className={`relative flex items-start gap-4 p-4 rounded-xl transition-all duration-300 cursor-pointer border-2 ${
+                      selectedPaymentMethod === "apple"
+                        ? "border-primary bg-primary/8 shadow-sm"
+                        : "border-border/30 bg-white/40 dark:bg-white/5"
+                    } hover:border-primary/50 hover:shadow-md`}
+                  >
+                    <div className="flex items-center pt-1">
+                      <RadioGroupItem value="apple" id="apple" data-testid="radio-apple-pay" className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-foreground">Apple Pay</p>
+                      <p className="text-xs text-muted-foreground mt-1">Fast and secure payments</p>
+                    </div>
+                  </label>
 
-                <div className="p-3 border border-border/30 rounded-md">
-                  <p className="text-sm font-semibold text-foreground">Samsung Pay</p>
-                  <p className="text-xs text-muted-foreground">Coming soon</p>
-                </div>
+                  <label
+                    htmlFor="samsung"
+                    className={`relative flex items-start gap-4 p-4 rounded-xl transition-all duration-300 cursor-pointer border-2 ${
+                      selectedPaymentMethod === "samsung"
+                        ? "border-primary bg-primary/8 shadow-sm"
+                        : "border-border/30 bg-white/40 dark:bg-white/5"
+                    } hover:border-primary/50 hover:shadow-md`}
+                  >
+                    <div className="flex items-center pt-1">
+                      <RadioGroupItem value="samsung" id="samsung" data-testid="radio-samsung-pay" className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-foreground">Samsung Pay</p>
+                      <p className="text-xs text-muted-foreground mt-1">Fast and secure payments</p>
+                    </div>
+                  </label>
 
-                <div className="p-3 border border-border/30 rounded-md">
-                  <p className="text-sm font-semibold text-foreground">Card</p>
-                  <p className="text-xs text-muted-foreground">Coming soon</p>
-                </div>
+                  <label
+                    htmlFor="card"
+                    className={`relative flex items-start gap-4 p-4 rounded-xl transition-all duration-300 cursor-pointer border-2 ${
+                      selectedPaymentMethod === "card"
+                        ? "border-primary bg-primary/8 shadow-sm"
+                        : "border-border/30 bg-white/40 dark:bg-white/5"
+                    } hover:border-primary/50 hover:shadow-md`}
+                  >
+                    <div className="flex items-center pt-1">
+                      <RadioGroupItem value="card" id="card" data-testid="radio-card" className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-foreground">Card</p>
+                      <p className="text-xs text-muted-foreground mt-1">Debit or Credit Card</p>
+                    </div>
+                  </label>
+                </RadioGroup>
+              </div>
+
+              <div className={`p-4 rounded-xl border-2 transition-all duration-300 ${
+                selectedPaymentMethod === "crypto"
+                  ? "border-purple-500/30 bg-gradient-to-br from-purple-50 to-purple-50/50 dark:from-purple-950/30 dark:to-purple-950/20"
+                  : selectedPaymentMethod === "apple"
+                  ? "border-gray-500/30 bg-gradient-to-br from-gray-50 to-gray-50/50 dark:from-gray-950/30 dark:to-gray-950/20"
+                  : selectedPaymentMethod === "samsung"
+                  ? "border-blue-500/30 bg-gradient-to-br from-blue-50 to-blue-50/50 dark:from-blue-950/30 dark:to-blue-950/20"
+                  : "border-amber-500/30 bg-gradient-to-br from-amber-50 to-amber-50/50 dark:from-amber-950/30 dark:to-amber-950/20"
+              }`}>
+                <p className="text-sm text-foreground">
+                  <span className="font-semibold">
+                    {selectedPaymentMethod === "crypto"
+                      ? "Crypto"
+                      : selectedPaymentMethod === "apple"
+                      ? "Apple Pay"
+                      : selectedPaymentMethod === "samsung"
+                      ? "Samsung Pay"
+                      : "Card"}
+                  </span>
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {selectedPaymentMethod === "crypto"
+                    ? "Pay with supported cryptocurrencies"
+                    : selectedPaymentMethod === "apple"
+                    ? "Fast and secure Apple Pay"
+                    : selectedPaymentMethod === "samsung"
+                    ? "Fast and secure Samsung Pay"
+                    : "Pay with Debit or Credit Card"}
+                </p>
               </div>
 
               <Button
-                className="w-full bg-black hover:bg-black/90 text-white h-10 font-semibold"
-                data-testid="button-pay-crypto"
+                className="w-full bg-black hover:bg-black/90 text-white h-10 font-semibold transition-all duration-300"
+                data-testid="button-pay-method"
               >
-                PAY WITH CRYPTO
+                PAY {selectedPaymentMethod === "crypto" ? "WITH CRYPTO" : `WITH ${selectedPaymentMethod === "apple" ? "APPLE PAY" : selectedPaymentMethod === "samsung" ? "SAMSUNG PAY" : "CARD"}`}
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">
@@ -374,21 +454,21 @@ export default function InvoiceDetail() {
           </Card>
 
           {/* Share Section */}
-          <div className="flex gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Button
               variant="outline"
-              className="flex-1 border-2 h-10 gap-2"
+              className="w-full border-2 h-9 sm:h-10 gap-2 text-xs sm:text-sm"
               onClick={handleCopyLink}
               data-testid="button-copy-link"
             >
-              <Copy className="h-4 w-4" /> {copiedLink ? "Copied" : "Copy Link"}
+              <Copy className="h-3 w-3 sm:h-4 sm:w-4" /> {copiedLink ? "Copied" : "Copy Link"}
             </Button>
             <Button
               variant="outline"
-              className="flex-1 border-2 h-10 gap-2"
+              className="w-full border-2 h-9 sm:h-10 gap-2 text-xs sm:text-sm"
               data-testid="button-share-invoice"
             >
-              <Share2 className="h-4 w-4" /> Share Invoice
+              <Share2 className="h-3 w-3 sm:h-4 sm:w-4" /> Share Invoice
             </Button>
           </div>
 

@@ -109,9 +109,9 @@ export default function Profile() {
             <p className="text-muted-foreground text-sm mt-1">Manage your business information and settings</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Business Information */}
-            <Card className="md:col-span-2 border-2 border-border/50">
+            <Card className="lg:col-span-2 border-2 border-border/50">
               <CardHeader>
                 <CardTitle>Business Information</CardTitle>
               </CardHeader>
@@ -284,47 +284,49 @@ export default function Profile() {
               </Dialog>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-border/50 bg-muted/30">
-                      <TableHead className="font-semibold text-foreground">Bank Name</TableHead>
-                      <TableHead className="font-semibold text-foreground">Account Holder</TableHead>
-                      <TableHead className="font-semibold text-foreground">Account Number</TableHead>
-                      <TableHead className="font-semibold text-foreground">Status</TableHead>
-                      <TableHead className="text-right">Action</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {bankAccounts.map((bank) => (
-                      <TableRow key={bank.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-bank-${bank.id}`}>
-                        <TableCell className="font-medium text-foreground text-sm">{bank.bankName}</TableCell>
-                        <TableCell className="text-foreground/70 text-sm">{bank.accountHolder}</TableCell>
-                        <TableCell className="font-mono text-foreground/70 text-sm">{bank.accountNumber}</TableCell>
-                        <TableCell className="text-sm font-medium text-emerald-600">{bank.status}</TableCell>
-                        <TableCell className="text-right">
-                          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-                            <DialogTrigger asChild>
-                              <Button variant="ghost" size="sm" className="h-8 text-destructive hover:bg-destructive/10" data-testid={`button-delete-bank-${bank.id}`}>
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Delete Bank Account</DialogTitle>
-                                <DialogDescription>Are you sure? You cannot undo this action.</DialogDescription>
-                              </DialogHeader>
-                              <div className="flex gap-3 justify-end">
-                                <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-                                <Button className="bg-destructive hover:bg-destructive/90" onClick={() => setDeleteDialogOpen(false)}>Delete</Button>
-                              </div>
-                            </DialogContent>
-                          </Dialog>
-                        </TableCell>
+              <div className="w-full overflow-x-auto scrollbar-hide">
+                <div className="min-w-full">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-border/50 bg-muted/30">
+                        <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Bank Name</TableHead>
+                        <TableHead className="font-semibold text-foreground hidden sm:table-cell text-xs sm:text-sm">Account Holder</TableHead>
+                        <TableHead className="font-semibold text-foreground hidden md:table-cell text-xs sm:text-sm">Account Number</TableHead>
+                        <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Status</TableHead>
+                        <TableHead className="text-right text-xs sm:text-sm">Action</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {bankAccounts.map((bank) => (
+                        <TableRow key={bank.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-bank-${bank.id}`}>
+                          <TableCell className="font-medium text-foreground text-xs sm:text-sm">{bank.bankName}</TableCell>
+                          <TableCell className="text-foreground/70 hidden sm:table-cell text-xs sm:text-sm">{bank.accountHolder}</TableCell>
+                          <TableCell className="font-mono text-foreground/70 hidden md:table-cell text-xs">{bank.accountNumber}</TableCell>
+                          <TableCell className="text-xs sm:text-sm font-medium text-emerald-600">{bank.status}</TableCell>
+                          <TableCell className="text-right">
+                            <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                              <DialogTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-7 text-destructive hover:bg-destructive/10" data-testid={`button-delete-bank-${bank.id}`}>
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>Delete Bank Account</DialogTitle>
+                                  <DialogDescription>Are you sure? You cannot undo this action.</DialogDescription>
+                                </DialogHeader>
+                                <div className="flex gap-3 justify-end">
+                                  <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+                                  <Button className="bg-destructive hover:bg-destructive/90" onClick={() => setDeleteDialogOpen(false)}>Delete</Button>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             </CardContent>
           </Card>

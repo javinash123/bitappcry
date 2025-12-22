@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { ResponsivePagination } from "@/components/dashboard/ResponsivePagination";
 
 const mockItems = [
   { id: 1, name: "Web Development", price: 100, description: "Professional web development services" },
@@ -219,99 +220,83 @@ export default function Items() {
 
           {/* Items Table */}
           <div className="border border-border/50 rounded-xl overflow-hidden bg-card shadow-sm">
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
-                      onClick={() => handleSort("name")}
-                      data-testid="header-name"
-                    >
-                      <div className="flex items-center gap-2">
-                        Name
-                        <SortIcon field="name" />
-                      </div>
-                    </TableHead>
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right" 
-                      onClick={() => handleSort("price")}
-                      data-testid="header-price"
-                    >
-                      <div className="flex items-center gap-2 justify-end">
-                        Price
-                        <SortIcon field="price" />
-                      </div>
-                    </TableHead>
-                    <TableHead className="font-semibold text-foreground text-right">Action</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paginatedData.map((item) => (
-                    <TableRow key={item.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-item-${item.id}`}>
-                      <TableCell className="font-medium text-foreground">{item.name}</TableCell>
-                      <TableCell className="text-right text-foreground font-medium">{item.price.toFixed(2)} AED</TableCell>
-                      <TableCell className="text-right">
-                        <Dialog open={deleteDialogOpen && selectedItemId === item.id} onOpenChange={(open) => {
-                          setDeleteDialogOpen(open);
-                          if (!open) setSelectedItemId(null);
-                        }}>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
-                              onClick={() => setSelectedItemId(item.id)}
-                              data-testid={`button-delete-item-${item.id}`}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Delete Item</DialogTitle>
-                              <DialogDescription>Are you sure you want to delete this item? This action cannot be undone.</DialogDescription>
-                            </DialogHeader>
-                            <div className="flex gap-3 justify-end">
-                              <Button variant="outline" onClick={() => { setDeleteDialogOpen(false); setSelectedItemId(null); }}>Cancel</Button>
-                              <Button className="bg-destructive hover:bg-destructive/90" onClick={handleDelete}>Delete</Button>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
-                      </TableCell>
+            <div className="w-full overflow-x-auto scrollbar-hide">
+              <div className="min-w-full">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-xs sm:text-sm" 
+                        onClick={() => handleSort("name")}
+                        data-testid="header-name"
+                      >
+                        <div className="flex items-center gap-1">
+                          Name
+                          <SortIcon field="name" />
+                        </div>
+                      </TableHead>
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right text-xs sm:text-sm" 
+                        onClick={() => handleSort("price")}
+                        data-testid="header-price"
+                      >
+                        <div className="flex items-center gap-1 justify-end">
+                          Price
+                          <SortIcon field="price" />
+                        </div>
+                      </TableHead>
+                      <TableHead className="font-semibold text-foreground text-right text-xs sm:text-sm">Action</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedData.map((item) => (
+                      <TableRow key={item.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-item-${item.id}`}>
+                        <TableCell className="font-medium text-foreground text-xs sm:text-sm">{item.name}</TableCell>
+                        <TableCell className="text-right text-foreground font-medium text-xs sm:text-sm">{item.price.toFixed(2)} AED</TableCell>
+                        <TableCell className="text-right">
+                          <Dialog open={deleteDialogOpen && selectedItemId === item.id} onOpenChange={(open) => {
+                            setDeleteDialogOpen(open);
+                            if (!open) setSelectedItemId(null);
+                          }}>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                onClick={() => setSelectedItemId(item.id)}
+                                data-testid={`button-delete-item-${item.id}`}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Delete Item</DialogTitle>
+                                <DialogDescription>Are you sure you want to delete this item? This action cannot be undone.</DialogDescription>
+                              </DialogHeader>
+                              <div className="flex gap-3 justify-end">
+                                <Button variant="outline" onClick={() => { setDeleteDialogOpen(false); setSelectedItemId(null); }}>Cancel</Button>
+                                <Button className="bg-destructive hover:bg-destructive/90" onClick={handleDelete}>Delete</Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between py-4">
-            <p className="text-sm text-muted-foreground">
-              Page <span className="font-medium text-foreground">{currentPage}</span> of <span className="font-medium text-foreground">{totalPages}</span>
-            </p>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                data-testid="button-prev-page"
-              >
-                Previous
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                data-testid="button-next-page"
-              >
-                Next
-              </Button>
-            </div>
-          </div>
+          <ResponsivePagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsShowing={paginatedData.length}
+            totalItems={filteredData.length}
+          />
 
           {/* Global Taxes */}
           <Card className="border-2 border-border/50 bg-muted/30">

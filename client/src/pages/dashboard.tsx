@@ -4,6 +4,7 @@ import { QuickActions } from "@/components/dashboard/QuickActions";
 import { PopularCryptos } from "@/components/dashboard/PopularCryptos";
 import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
 import { BusinessInfo } from "@/components/dashboard/BusinessInfo";
+import { RevenueChart } from "@/components/dashboard/RevenueChart";
 import { Menu, Bell, Search } from "lucide-react";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -59,6 +60,8 @@ export default function Dashboard() {
         <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full space-y-8">
           
           <StatsCards />
+
+          <RevenueChart />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-1">

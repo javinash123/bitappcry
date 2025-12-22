@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ResponsivePagination } from "@/components/dashboard/ResponsivePagination";
 
 const mockInvoices = [
   { id: 1, invoice: "#INV-2025-001", customer: "John Doe", amount: 2500, status: "Paid", created: "Dec 18, 2025" },
@@ -141,141 +142,125 @@ export default function Invoices() {
 
           {/* Table */}
           <div className="border border-border/50 rounded-xl overflow-hidden bg-card shadow-sm">
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
-                      onClick={() => handleSort("invoice")}
-                      data-testid="header-invoice"
-                    >
-                      <div className="flex items-center gap-2">
-                        Invoice
-                        <SortIcon field="invoice" />
-                      </div>
-                    </TableHead>
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
-                      onClick={() => handleSort("customer")}
-                      data-testid="header-customer"
-                    >
-                      <div className="flex items-center gap-2">
-                        Customer
-                        <SortIcon field="customer" />
-                      </div>
-                    </TableHead>
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right" 
-                      onClick={() => handleSort("amount")}
-                      data-testid="header-amount"
-                    >
-                      <div className="flex items-center gap-2 justify-end">
-                        Amount
-                        <SortIcon field="amount" />
-                      </div>
-                    </TableHead>
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
-                      onClick={() => handleSort("status")}
-                      data-testid="header-status"
-                    >
-                      <div className="flex items-center gap-2">
-                        Status
-                        <SortIcon field="status" />
-                      </div>
-                    </TableHead>
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
-                      onClick={() => handleSort("created")}
-                      data-testid="header-created"
-                    >
-                      <div className="flex items-center gap-2">
-                        Created
-                        <SortIcon field="created" />
-                      </div>
-                    </TableHead>
-                    <TableHead className="font-semibold text-foreground">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paginatedData.map((invoice) => (
-                    <TableRow key={invoice.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-invoice-${invoice.id}`}>
-                      <TableCell className="font-medium text-foreground">{invoice.invoice}</TableCell>
-                      <TableCell className="text-foreground/70">{invoice.customer}</TableCell>
-                      <TableCell className="text-right text-foreground font-medium">{invoice.amount.toLocaleString()} AED</TableCell>
-                      <TableCell>
-                        <Badge className={`${statusColors[invoice.status as keyof typeof statusColors]} border`}>
-                          {invoice.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-foreground/70 text-sm">{invoice.created}</TableCell>
-                      <TableCell>
-                        <div className="flex gap-1">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 px-2 text-xs hover:bg-primary/10 hover:text-primary"
-                            data-testid={`button-copy-${invoice.id}`}
-                            onClick={() => navigator.clipboard.writeText(invoice.invoice)}
-                          >
-                            Copy
-                          </Button>
-                          <Button variant="ghost" size="sm" className="h-8 px-2 text-xs hover:bg-primary/10 hover:text-primary" data-testid={`button-view-${invoice.id}`}>
-                            View
-                          </Button>
-                          <Dialog open={completeDialogOpen} onOpenChange={setCompleteDialogOpen}>
-                            <DialogTrigger asChild>
-                              <Button variant="ghost" size="sm" className="h-8 px-2 text-xs hover:bg-green-500/10 hover:text-green-700" data-testid={`button-complete-${invoice.id}`}>
-                                Complete
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Complete Invoice</DialogTitle>
-                                <DialogDescription>Are you sure you want to mark this invoice as complete?</DialogDescription>
-                              </DialogHeader>
-                              <div className="flex gap-3 justify-end">
-                                <Button variant="outline" onClick={() => setCompleteDialogOpen(false)}>Cancel</Button>
-                                <Button className="bg-primary hover:bg-primary/90" onClick={() => setCompleteDialogOpen(false)}>Confirm</Button>
-                              </div>
-                            </DialogContent>
-                          </Dialog>
+            <div className="w-full overflow-x-auto scrollbar-hide">
+              <div className="min-w-full">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-xs sm:text-sm" 
+                        onClick={() => handleSort("invoice")}
+                        data-testid="header-invoice"
+                      >
+                        <div className="flex items-center gap-1">
+                          Invoice
+                          <SortIcon field="invoice" />
                         </div>
-                      </TableCell>
+                      </TableHead>
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors hidden sm:table-cell text-xs sm:text-sm" 
+                        onClick={() => handleSort("customer")}
+                        data-testid="header-customer"
+                      >
+                        <div className="flex items-center gap-1">
+                          Customer
+                          <SortIcon field="customer" />
+                        </div>
+                      </TableHead>
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right text-xs sm:text-sm" 
+                        onClick={() => handleSort("amount")}
+                        data-testid="header-amount"
+                      >
+                        <div className="flex items-center gap-1 justify-end">
+                          Amount
+                          <SortIcon field="amount" />
+                        </div>
+                      </TableHead>
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-xs sm:text-sm" 
+                        onClick={() => handleSort("status")}
+                        data-testid="header-status"
+                      >
+                        <div className="flex items-center gap-1">
+                          Status
+                          <SortIcon field="status" />
+                        </div>
+                      </TableHead>
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors hidden md:table-cell text-xs sm:text-sm" 
+                        onClick={() => handleSort("created")}
+                        data-testid="header-created"
+                      >
+                        <div className="flex items-center gap-1">
+                          Created
+                          <SortIcon field="created" />
+                        </div>
+                      </TableHead>
+                      <TableHead className="font-semibold text-foreground text-xs sm:text-sm">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedData.map((invoice) => (
+                      <TableRow key={invoice.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-invoice-${invoice.id}`}>
+                        <TableCell className="font-medium text-foreground text-xs sm:text-sm">{invoice.invoice}</TableCell>
+                        <TableCell className="text-foreground/70 hidden sm:table-cell text-xs sm:text-sm">{invoice.customer}</TableCell>
+                        <TableCell className="text-right text-foreground font-medium text-xs sm:text-sm">{invoice.amount.toLocaleString()} AED</TableCell>
+                        <TableCell className="text-xs sm:text-sm">
+                          <Badge className={`${statusColors[invoice.status as keyof typeof statusColors]} border text-xs`}>
+                            {invoice.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-foreground/70 hidden md:table-cell text-xs">{invoice.created}</TableCell>
+                        <TableCell>
+                          <div className="flex gap-0.5">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 px-1.5 text-xs hover:bg-primary/10 hover:text-primary"
+                              data-testid={`button-copy-${invoice.id}`}
+                              onClick={() => navigator.clipboard.writeText(invoice.invoice)}
+                            >
+                              Copy
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs hover:bg-primary/10 hover:text-primary hidden sm:inline-flex" data-testid={`button-view-${invoice.id}`}>
+                              View
+                            </Button>
+                            <Dialog open={completeDialogOpen} onOpenChange={setCompleteDialogOpen}>
+                              <DialogTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs hover:bg-green-500/10 hover:text-green-700 hidden sm:inline-flex" data-testid={`button-complete-${invoice.id}`}>
+                                  Complete
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>Complete Invoice</DialogTitle>
+                                  <DialogDescription>Are you sure you want to mark this invoice as complete?</DialogDescription>
+                                </DialogHeader>
+                                <div className="flex gap-3 justify-end">
+                                  <Button variant="outline" onClick={() => setCompleteDialogOpen(false)}>Cancel</Button>
+                                  <Button className="bg-primary hover:bg-primary/90" onClick={() => setCompleteDialogOpen(false)}>Confirm</Button>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between py-4">
-            <p className="text-sm text-muted-foreground">
-              Page <span className="font-medium text-foreground">{currentPage}</span> of <span className="font-medium text-foreground">{totalPages}</span>
-            </p>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                data-testid="button-prev-page"
-              >
-                Previous
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                data-testid="button-next-page"
-              >
-                Next
-              </Button>
-            </div>
-          </div>
+          <ResponsivePagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsShowing={paginatedData.length}
+            totalItems={filteredData.length}
+          />
         </main>
       </div>
     </div>

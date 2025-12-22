@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
+import { ResponsivePagination } from "@/components/dashboard/ResponsivePagination";
 
 const mockTransactions = [
   { id: 1, transaction: "#29", invoice: "#INV-175829...", amount: 57.75, crypto: "USDT:BSC", status: "Finished", date: "Sep 19, 2025, 05:24 AM" },
@@ -163,100 +164,84 @@ export default function Transactions() {
 
           {/* Transactions Table */}
           <div className="border border-border/50 rounded-xl overflow-hidden bg-card shadow-sm">
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
-                      onClick={() => handleSort("transaction")}
-                      data-testid="header-transaction"
-                    >
-                      <div className="flex items-center gap-2">
-                        Transaction
-                        <SortIcon field="transaction" />
-                      </div>
-                    </TableHead>
-                    <TableHead className="font-semibold text-foreground">Invoice</TableHead>
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right" 
-                      onClick={() => handleSort("amount")}
-                      data-testid="header-amount"
-                    >
-                      <div className="flex items-center gap-2 justify-end">
-                        Amount
-                        <SortIcon field="amount" />
-                      </div>
-                    </TableHead>
-                    <TableHead className="font-semibold text-foreground">Cryptocurrency</TableHead>
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
-                      onClick={() => handleSort("status")}
-                      data-testid="header-status"
-                    >
-                      <div className="flex items-center gap-2">
-                        Status
-                        <SortIcon field="status" />
-                      </div>
-                    </TableHead>
-                    <TableHead 
-                      className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors" 
-                      onClick={() => handleSort("date")}
-                      data-testid="header-date"
-                    >
-                      <div className="flex items-center gap-2">
-                        Date
-                        <SortIcon field="date" />
-                      </div>
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paginatedData.map((tx) => (
-                    <TableRow key={tx.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-transaction-${tx.id}`}>
-                      <TableCell className="font-medium text-foreground">{tx.transaction}</TableCell>
-                      <TableCell className="text-foreground/70">{tx.invoice}</TableCell>
-                      <TableCell className="text-right text-foreground font-medium">{tx.amount.toFixed(2)} AED</TableCell>
-                      <TableCell className="text-foreground/70">{tx.crypto}</TableCell>
-                      <TableCell>
-                        <Badge className={`${statusColors[tx.status as keyof typeof statusColors]} border`}>
-                          {tx.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-foreground/70">{tx.date}</TableCell>
+            <div className="w-full overflow-x-auto scrollbar-hide">
+              <div className="min-w-full">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-xs sm:text-sm" 
+                        onClick={() => handleSort("transaction")}
+                        data-testid="header-transaction"
+                      >
+                        <div className="flex items-center gap-1">
+                          Transaction
+                          <SortIcon field="transaction" />
+                        </div>
+                      </TableHead>
+                      <TableHead className="font-semibold text-foreground hidden sm:table-cell text-xs sm:text-sm">Invoice</TableHead>
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-right text-xs sm:text-sm" 
+                        onClick={() => handleSort("amount")}
+                        data-testid="header-amount"
+                      >
+                        <div className="flex items-center gap-1 justify-end">
+                          Amount
+                          <SortIcon field="amount" />
+                        </div>
+                      </TableHead>
+                      <TableHead className="font-semibold text-foreground hidden md:table-cell text-xs sm:text-sm">Crypto</TableHead>
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors text-xs sm:text-sm" 
+                        onClick={() => handleSort("status")}
+                        data-testid="header-status"
+                      >
+                        <div className="flex items-center gap-1">
+                          Status
+                          <SortIcon field="status" />
+                        </div>
+                      </TableHead>
+                      <TableHead 
+                        className="font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors hidden md:table-cell text-xs sm:text-sm" 
+                        onClick={() => handleSort("date")}
+                        data-testid="header-date"
+                      >
+                        <div className="flex items-center gap-1">
+                          Date
+                          <SortIcon field="date" />
+                        </div>
+                      </TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedData.map((tx) => (
+                      <TableRow key={tx.id} className="border-border/50 hover:bg-muted/20 transition-colors" data-testid={`row-transaction-${tx.id}`}>
+                        <TableCell className="font-medium text-foreground text-xs sm:text-sm">{tx.transaction}</TableCell>
+                        <TableCell className="text-foreground/70 hidden sm:table-cell text-xs sm:text-sm truncate">{tx.invoice}</TableCell>
+                        <TableCell className="text-right text-foreground font-medium text-xs sm:text-sm">{tx.amount.toFixed(2)} AED</TableCell>
+                        <TableCell className="text-foreground/70 hidden md:table-cell text-xs">{tx.crypto}</TableCell>
+                        <TableCell className="text-xs sm:text-sm">
+                          <Badge className={`${statusColors[tx.status as keyof typeof statusColors]} border text-xs`}>
+                            {tx.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-foreground/70 hidden md:table-cell text-xs">{tx.date}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between py-4">
-            <p className="text-sm text-muted-foreground">
-              Page <span className="font-medium text-foreground">{currentPage}</span> of <span className="font-medium text-foreground">{totalPages}</span>
-            </p>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                data-testid="button-prev-page"
-              >
-                Previous
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                data-testid="button-next-page"
-              >
-                Next
-              </Button>
-            </div>
-          </div>
+          <ResponsivePagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsShowing={paginatedData.length}
+            totalItems={filteredData.length}
+          />
         </main>
       </div>
     </div>
