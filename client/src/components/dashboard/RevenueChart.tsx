@@ -87,11 +87,11 @@ export function RevenueChart() {
 
   return (
     <Card className="border border-border/50 bg-card">
-      <CardHeader className="pb-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <CardHeader className="pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <CardTitle className="text-xl">Total Revenue</CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">Track your revenue over time</p>
+            <CardTitle className="text-lg">Total Revenue</CardTitle>
+            <p className="text-xs text-muted-foreground mt-0.5">Track your revenue over time</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button
@@ -134,25 +134,25 @@ export function RevenueChart() {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
         {/* Revenue Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-muted/30 rounded-lg border border-border/50">
-            <p className="text-xs text-muted-foreground mb-1">Total Revenue</p>
-            <p className="text-xl md:text-2xl font-bold text-foreground">${(totalRevenue / 1000).toFixed(1)}K</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="p-3 bg-muted/30 rounded-lg border border-border/50">
+            <p className="text-xs text-muted-foreground mb-0.5">Total Revenue</p>
+            <p className="text-lg md:text-xl font-bold text-foreground">${(totalRevenue / 1000).toFixed(1)}K</p>
           </div>
-          <div className="p-4 bg-muted/30 rounded-lg border border-border/50">
-            <p className="text-xs text-muted-foreground mb-1">Average</p>
-            <p className="text-xl md:text-2xl font-bold text-foreground">${(averageRevenue / 1000).toFixed(1)}K</p>
+          <div className="p-3 bg-muted/30 rounded-lg border border-border/50">
+            <p className="text-xs text-muted-foreground mb-0.5">Average</p>
+            <p className="text-lg md:text-xl font-bold text-foreground">${(averageRevenue / 1000).toFixed(1)}K</p>
           </div>
-          <div className="p-4 bg-muted/30 rounded-lg border border-border/50 col-span-2 md:col-span-1">
-            <p className="text-xs text-muted-foreground mb-1">Transactions</p>
-            <p className="text-xl md:text-2xl font-bold text-foreground">{chartData.length}</p>
+          <div className="p-3 bg-muted/30 rounded-lg border border-border/50 col-span-2 md:col-span-1">
+            <p className="text-xs text-muted-foreground mb-0.5">Transactions</p>
+            <p className="text-lg md:text-xl font-bold text-foreground">{chartData.length}</p>
           </div>
         </div>
 
         {/* Chart */}
-        <div className="w-full h-72 -mx-4 px-4">
+        <div className="w-full h-56 -mx-4 px-4">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}

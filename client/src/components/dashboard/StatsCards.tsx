@@ -34,14 +34,14 @@ export function StatsCards() {
         <Card className="glass-card hover:-translate-y-1 transition-transform duration-300">
           <CardContent className="p-6">
             <div className="flex justify-between items-start mb-4">
-              <div className="p-2.5 bg-emerald-500/10 rounded-xl">
-                <ArrowDownLeft className="h-5 w-5 text-emerald-600" />
+              <div className="p-2.5 bg-purple-500/10 rounded-xl">
+                <Receipt className="h-5 w-5 text-purple-600" />
               </div>
-              <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">Revenue</span>
+              <span className="text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-1 rounded-md">Items</span>
             </div>
             <div>
-              <h3 className="text-3xl font-bold font-heading text-foreground">52.50 <span className="text-sm font-normal text-muted-foreground">AED</span></h3>
-              <p className="text-sm text-muted-foreground mt-1">Total Revenue</p>
+              <h3 className="text-3xl font-bold font-heading text-foreground">127</h3>
+              <p className="text-sm text-muted-foreground mt-1">Total Items</p>
             </div>
           </CardContent>
         </Card>

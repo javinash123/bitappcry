@@ -57,11 +57,11 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full space-y-8">
+        <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full space-y-6">
           
-          <StatsCards />
-
           <RevenueChart />
+
+          <StatsCards />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-1">
