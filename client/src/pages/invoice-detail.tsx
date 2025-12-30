@@ -354,12 +354,23 @@ export default function InvoiceDetail() {
               </label>
             </RadioGroup>
 
-            <Button
-              className="w-full bg-black hover:bg-black/90 text-white h-10 text-xs sm:text-sm font-semibold transition-all duration-300"
-              data-testid="button-pay-method"
-            >
-              PAY {selectedPaymentMethod === "crypto" ? "WITH CRYPTO" : `WITH ${selectedPaymentMethod === "apple" ? "APPLE PAY" : selectedPaymentMethod === "samsung" ? "SAMSUNG PAY" : "CARD"}`}
-            </Button>
+            {selectedPaymentMethod === "crypto" ? (
+              <Link href={`/pay/${invoiceIdValue}`}>
+                <Button
+                  className="w-full bg-black hover:bg-black/90 text-white h-10 text-xs sm:text-sm font-semibold transition-all duration-300"
+                  data-testid="button-pay-method"
+                >
+                  PAY WITH CRYPTO
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                className="w-full bg-black hover:bg-black/90 text-white h-10 text-xs sm:text-sm font-semibold transition-all duration-300"
+                data-testid="button-pay-method"
+              >
+                PAY WITH {selectedPaymentMethod === "apple" ? "APPLE PAY" : selectedPaymentMethod === "samsung" ? "SAMSUNG PAY" : "CARD"}
+              </Button>
+            )}
 
             <p className="text-[10px] text-muted-foreground text-center">
               By clicking on pay you agree with SimpleBit's terms of use

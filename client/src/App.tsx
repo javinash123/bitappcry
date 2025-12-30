@@ -9,6 +9,8 @@ import Invoices from "@/pages/invoices";
 import CreateInvoice from "@/pages/create-invoice";
 import InvoiceSuccess from "@/pages/invoice-success";
 import InvoiceDetail from "@/pages/invoice-detail";
+import Pay from "@/pages/pay";
+import PayWith from "@/pages/pay-with";
 import Items from "@/pages/items";
 import Transactions from "@/pages/transactions";
 import Payouts from "@/pages/payouts";
@@ -32,6 +34,8 @@ function Router() {
         <Route path="/create-invoice" component={CreateInvoice} />
         <Route path="/invoice-success" component={InvoiceSuccess} />
         <Route path="/invoice/:id" component={InvoiceDetail} />
+        <Route path="/pay/:id" component={Pay} />
+        <Route path="/pay-with/:id/:crypto" component={PayWith} />
         <Route path="/items" component={Items} />
         <Route path="/transactions" component={Transactions} />
         <Route path="/payouts" component={Payouts} />
