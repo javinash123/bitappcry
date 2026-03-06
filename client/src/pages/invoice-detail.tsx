@@ -1,14 +1,26 @@
-import { Sidebar } from "@/components/layout/Sidebar";
-import { Menu, Bell, Share2, Copy } from "lucide-react";
 import { useState } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Link, useRoute } from "wouter";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  ChevronDown,
+  ChevronUp,
+  Lock,
+  Smartphone,
+  CreditCard,
+  Copy,
+  Download,
+  Languages,
+} from "lucide-react";
+import { SiApplepay, SiGooglepay } from "react-icons/si";
 
 interface SplitPaymentModalProps {
   isOpen: boolean;
@@ -28,7 +40,6 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setAmount(value);
-
     if (value && parseFloat(value) > maxAmount) {
       setErrors(`Amount cannot exceed ${maxAmount} AED`);
     } else if (value && parseFloat(value) <= 0) {
@@ -54,57 +65,27 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Split Payment</DialogTitle>
-          <DialogDescription>
-            Divide the invoice payment into multiple parts
-          </DialogDescription>
         </DialogHeader>
-
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="split-amount" className="text-sm font-medium">
-              Enter Amount (AED)
-            </Label>
+            <Label htmlFor="split-amount">Enter Amount (AED)</Label>
             <Input
               id="split-amount"
               type="number"
-              placeholder="Enter amount"
               value={amount}
               onChange={handleInputChange}
-              className="border-2 border-border/50 focus:border-primary/50 h-10"
-              data-testid="input-split-amount"
+              placeholder="0.00"
             />
             {errors && <p className="text-xs text-destructive">{errors}</p>}
           </div>
-
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={handleSelectMax}
-              className="flex-1 border-2 h-10 text-sm"
-              data-testid="button-select-max"
-            >
-              Select Max ({maxAmount} AED)
-            </Button>
-          </div>
-
-          <p className="text-xs text-muted-foreground">
-            Maximum amount: <span className="font-semibold">{maxAmount} AED</span>
-          </p>
-
+          <Button variant="outline" onClick={handleSelectMax} className="w-full">
+            Select Max ({maxAmount} AED)
+          </Button>
           <div className="flex gap-3 pt-4">
-            <Button
-              variant="outline"
-              onClick={onClose}
-              className="flex-1 border-2 h-10"
-              data-testid="button-split-cancel"
-            >
+            <Button variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
-            <Button
-              onClick={handleContinue}
-              className="flex-1 bg-primary hover:bg-primary/90 h-10"
-              data-testid="button-split-continue"
-            >
+            <Button onClick={handleContinue} className="flex-1">
               Continue
             </Button>
           </div>
@@ -114,300 +95,237 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
   );
 }
 
+function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void; onAdd: (amount: number) => void }) {
+  const [tipAmount, setTipAmount] = useState("");
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Add Tip</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="grid grid-cols-3 gap-2">
+            {[5, 10, 15].map((percent) => (
+              <Button key={percent} variant="outline" onClick={() => setTipAmount((100 * percent / 100).toString())}>
+                {percent}%
+              </Button>
+            ))}
+          </div>
+          <div className="space-y-2">
+            <Label>Custom Amount</Label>
+            <Input type="number" value={tipAmount} onChange={(e) => setTipAmount(e.target.value)} placeholder="0.00" />
+          </div>
+          <Button className="w-full" onClick={() => { onAdd(Number(tipAmount)); onClose(); }}>Add Tip</Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function InvoiceDetail() {
-  const [match, params] = useRoute("/invoice/:id");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [, params] = useRoute("/invoice/:id");
+  const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
   const [splitModalOpen, setSplitModalOpen] = useState(false);
-  const [copiedLink, setCopiedLink] = useState(false);
-  const [selectedTip, setSelectedTip] = useState<string | null>(null);
-  const [customTip, setCustomTip] = useState("");
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("crypto");
+  const [tipModalOpen, setTipModalOpen] = useState(false);
 
-  // Mock invoice data
-  const companyName = "Webcreateres";
-  const companyLogo = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=100&h=100&fit=crop";
-  const invoiceIdValue = params?.id || "INV-2025-001";
-  const invoiceId = `#${invoiceIdValue}`;
-  const itemName = "1x Mob Dev";
-  const itemAmount = 50.0;
-  const vatPercentage = 5.0;
-  const vatAmount = 2.5;
-  const serviceFee = 2.5;
-  const taxesTotal = 5.3;
-  const totalBill = 57.75;
-  const totalCharged = 60.64;
-  const tip = 5.25;
-  const youPay = 60.64;
-  const invoiceLink = `https://app.simple-bit.com/invoice/${invoiceIdValue}`;
+  const companyName = "Rent Any Car Dubai";
+  const companyId = "7122976";
+  const amountToPay = 100.00;
+  const currency = "AED";
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(invoiceLink);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
-  };
-
-  const handleSelectTip = (percentage: number) => {
-    setSelectedTip(percentage.toString());
-    setCustomTip("");
-  };
+  const invoiceItems = [
+    { name: "Mercedes G63 Car Rental", qty: 1, price: 2500.00 }
+  ];
+  const orderTotal = 2625.00;
+  const taxVat = 125.00;
+  const customerOrderTotal = 2625.00;
+  const paidByCustomer = 0.00;
+  const outstandingBalance = 2625.00;
 
   return (
-    <div className="min-h-screen bg-background font-sans flex items-center justify-center p-4">
-      <main className="w-full max-w-2xl space-y-4 sm:space-y-6">
-        {/* Company Header */}
-        <Card className="border-2 border-border/50">
-          <CardContent className="pt-6 flex flex-row items-center gap-4">
-            <img
-              src={companyLogo}
-              alt={companyName}
-              className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg border border-border/30 object-cover"
-              data-testid="img-company-logo"
-            />
-            <div className="min-w-0">
-              <h2 className="text-base sm:text-xl font-bold font-heading truncate">{companyName}</h2>
-              <p className="text-[10px] sm:text-sm text-muted-foreground">Invoice {invoiceId}</p>
+    <div className="min-h-screen bg-[#F8F9FA] dark:bg-background font-sans p-4 md:p-8">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-card rounded-xl shadow-sm border border-border/40 overflow-hidden">
+        {/* Header */}
+        <div className="p-6 flex justify-between items-start border-b border-border/10">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-[#8B734B] rounded flex items-center justify-center text-white text-3xl font-bold">
+              R
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Invoice Details */}
-        <Card className="border-2 border-border/50">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-base sm:text-lg">INVOICE</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-xs sm:text-sm text-foreground">{itemName}</span>
-              <span className="text-sm sm:text-base font-semibold">{itemAmount.toFixed(2)} AED</span>
-            </div>
-
-            <div className="border-t border-border/30 pt-4 space-y-3">
-              <div className="bg-primary/5 p-3 sm:p-4 rounded-lg space-y-2">
-                <div className="flex justify-between items-center text-[10px] sm:text-sm">
-                  <span>Taxes & Fees</span>
-                  <span className="text-muted-foreground">VAT ({vatPercentage}%)</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] sm:text-xs text-muted-foreground">Service Fee</span>
-                  <span className="text-xs sm:text-sm font-semibold">{serviceFee.toFixed(2)} AED</span>
-                </div>
-                <div className="flex justify-between items-center font-semibold border-t border-primary/20 pt-2">
-                  <span className="text-[10px] sm:text-sm">Taxes & Fees Total</span>
-                  <span className="text-xs sm:text-sm">{taxesTotal.toFixed(2)} AED</span>
-                </div>
+            <div>
+              <div className="flex items-center gap-1 text-[10px] text-muted-foreground uppercase font-medium">
+                <Lock className="w-3 h-3" /> Secure Checkout
               </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between items-center text-xs sm:text-sm">
-                  <span className="font-medium">Total Bill</span>
-                  <span className="font-semibold">{totalBill.toFixed(2)} AED</span>
-                </div>
-                <div className="flex justify-between items-center text-xs sm:text-sm">
-                  <span className="font-medium">Total Charged</span>
-                  <span className="font-semibold">{totalCharged.toFixed(2)} AED</span>
-                </div>
-                <div className="flex justify-between items-center text-xs sm:text-sm">
-                  <span className="font-medium">Tip</span>
-                  <span className="font-semibold">{tip.toFixed(2)} AED</span>
-                </div>
-                <div className="flex justify-between items-center border-t border-border/30 pt-3 font-bold">
-                  <span className="text-xs sm:text-sm">You Pay</span>
-                  <span className="text-base sm:text-lg">{youPay.toFixed(2)} AED</span>
-                </div>
-              </div>
+              <h1 className="text-xl font-bold text-foreground">{companyName}</h1>
+              <p className="text-xs text-muted-foreground">ID: {companyId}</p>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Actions */}
-        <div className="grid grid-cols-2 gap-3">
-          <Button
-            onClick={() => setSplitModalOpen(true)}
-            className="w-full bg-primary hover:bg-primary/90 h-9 sm:h-10 font-semibold text-xs sm:text-base"
-            data-testid="button-split-bill"
-          >
-            SPLIT BILL
-          </Button>
-
-          <Button
-            variant="outline"
-            className="w-full border-2 border-primary text-primary hover:bg-primary/5 h-9 sm:h-10 font-semibold text-xs sm:text-base"
-            data-testid="button-mark-completed"
-          >
-            COMPLETED
-          </Button>
+          </div>
+          <button className="text-xs font-medium text-foreground underline flex items-center gap-1">
+             Switch Language
+          </button>
         </div>
 
-        {/* Tip Section */}
-        <Card className="border-2 border-border/50">
-          <CardHeader className="pb-2 sm:pb-4">
-            <CardTitle className="text-xs sm:text-sm uppercase tracking-wide">Do you want to include a tip?</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-[10px] sm:text-sm text-muted-foreground">All proceeds go directly to our staff</p>
+        <div className="flex flex-col md:flex-row">
+          {/* Left Column: Summary & Actions */}
+          <div className="flex-1 p-6 space-y-6 md:border-r border-border/10">
+            {/* Amount Display */}
+            <div className="bg-[#F8F9FA] dark:bg-muted/30 rounded-xl p-8 text-center space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Amount to Pay:</p>
+              <h2 className="text-4xl font-black text-foreground">{currency} {amountToPay.toFixed(2)}</h2>
+            </div>
 
-            <div className="flex flex-row gap-2 sm:gap-3">
+            {/* View Details (Mobile Only Collapse) */}
+            <div className="md:hidden">
               <Button
-                variant={selectedTip === "10" ? "default" : "outline"}
-                onClick={() => handleSelectTip(10)}
-                className={`flex-1 min-w-0 h-9 sm:h-10 text-[10px] sm:text-sm ${selectedTip === "10" ? "bg-primary hover:bg-primary/90" : "border-2"}`}
-                data-testid="button-tip-10"
+                variant="ghost"
+                className="w-full flex justify-center items-center gap-2 text-sm font-medium py-2 bg-[#F8F9FA] dark:bg-muted/30"
+                onClick={() => setIsDetailsExpanded(!isDetailsExpanded)}
+                data-testid="button-view-details"
               >
-                10%
+                View Details {isDetailsExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </Button>
-              <Button
-                variant={selectedTip === "25" ? "default" : "outline"}
-                onClick={() => handleSelectTip(25)}
-                className={`flex-1 min-w-0 h-9 sm:h-10 text-[10px] sm:text-sm ${selectedTip === "25" ? "bg-primary hover:bg-primary/90" : "border-2"}`}
-                data-testid="button-tip-25"
-              >
-                25%
+              {isDetailsExpanded && (
+                <div className="mt-4 space-y-4 px-2 animate-in fade-in slide-in-from-top-2">
+                  <InvoiceSummary items={invoiceItems} orderTotal={orderTotal} taxVat={taxVat} customerOrderTotal={customerOrderTotal} paidByCustomer={paidByCustomer} outstandingBalance={outstandingBalance} />
+                </div>
+              )}
+            </div>
+
+            {/* Split & Tip Buttons */}
+            <div className="grid grid-cols-2 gap-4">
+              <Button variant="secondary" className="bg-[#F8F9FA] dark:bg-muted/50 text-foreground hover:bg-muted/70 h-12 font-semibold" onClick={() => setSplitModalOpen(true)} data-testid="button-split-bill">
+                Split Bill
               </Button>
-              <Button
-                variant={selectedTip === "custom" ? "default" : "outline"}
-                onClick={() => setSelectedTip("custom")}
-                className={`flex-1 min-w-0 h-9 sm:h-10 text-[10px] sm:text-sm ${selectedTip === "custom" ? "bg-primary hover:bg-primary/90" : "border-2"}`}
-                data-testid="button-tip-custom"
-              >
-                Custom
+              <Button variant="outline" className="border-2 border-[#00A3FF] text-foreground hover:bg-[#00A3FF]/5 h-12 font-semibold" onClick={() => setTipModalOpen(true)} data-testid="button-add-tip">
+                Add Tip
               </Button>
             </div>
 
-            {selectedTip === "custom" && (
-              <div className="flex gap-2 flex-row">
-                <Input
-                  type="number"
-                  placeholder="5.25"
-                  value={customTip}
-                  onChange={(e) => setCustomTip(e.target.value)}
-                  className="flex-1 border-2 border-border/50 focus:border-primary/50 h-9 sm:h-10 text-sm"
-                  data-testid="input-custom-tip"
-                />
-                <Button
-                  className="bg-primary hover:bg-primary/90 h-9 sm:h-10 px-4 text-xs sm:text-sm"
-                  data-testid="button-update-tip"
-                >
-                  Update
+            {/* Desktop Invoice Summary */}
+            <div className="hidden md:block space-y-4">
+               <InvoiceSummary items={invoiceItems} orderTotal={orderTotal} taxVat={taxVat} customerOrderTotal={customerOrderTotal} paidByCustomer={paidByCustomer} outstandingBalance={outstandingBalance} />
+            </div>
+
+            {/* QR Section (Desktop) */}
+            <div className="hidden md:block pt-8 border-t border-border/10">
+              <p className="font-bold text-foreground mb-4">Pay from another device</p>
+              <div className="flex items-center gap-6">
+                <div className="p-2 border border-border/20 rounded-lg bg-white">
+                  {/* Placeholder for QR Code */}
+                  <div className="w-24 h-24 bg-foreground/5 flex items-center justify-center">
+                    <Smartphone className="w-8 h-8 text-muted-foreground" />
+                  </div>
+                </div>
+                <div className="space-y-3 flex-1">
+                  <p className="text-xs text-muted-foreground">Scan to open invoice</p>
+                  <Button variant="outline" className="w-full justify-start gap-2 h-10 text-xs font-semibold" data-testid="button-copy-link">
+                    <Copy className="w-4 h-4" /> Copy link
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start gap-2 h-10 text-xs font-semibold" data-testid="button-download-qr">
+                    <Download className="w-4 h-4" /> Download QR
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Checkout Form */}
+          <div className="flex-1 p-6 space-y-8">
+            {/* Express Checkout */}
+            <div className="space-y-4">
+              <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Express Checkout</p>
+              <div className="grid grid-cols-2 gap-3">
+                <Button className="bg-black hover:bg-black/90 text-white h-12 gap-2" data-testid="button-apple-pay">
+                  <SiApplepay className="w-10 h-10" /> Pay
+                </Button>
+                <Button className="bg-black hover:bg-black/90 text-white h-12 gap-2" data-testid="button-google-pay">
+                  <SiGooglepay className="w-10 h-10" /> Pay
                 </Button>
               </div>
-            )}
+            </div>
 
-            <p className="text-[10px] sm:text-xs text-muted-foreground">
-              Base: <span className="font-semibold">{totalBill.toFixed(2)} AED</span> Tip: <span className="text-primary font-semibold">{tip.toFixed(2)} AED</span>
-            </p>
-          </CardContent>
-        </Card>
+            {/* Payment Method */}
+            <div className="space-y-4">
+              <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Payment Method</p>
+              <div className="bg-[#F8F9FA] dark:bg-muted/30 p-4 rounded-lg flex items-center justify-between">
+                <span className="text-sm font-medium">Card</span>
+              </div>
+            </div>
 
-        {/* Payment Method */}
-        <Card className="border-2 border-border/50">
-          <CardHeader className="pb-2 sm:pb-4">
-            <CardTitle className="text-xs sm:text-sm uppercase tracking-wide">Payment Method</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <RadioGroup value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod} className="grid grid-cols-2 gap-3">
-              <label
-                htmlFor="crypto"
-                className={`relative flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-300 cursor-pointer border-2 ${
-                  selectedPaymentMethod === "crypto"
-                    ? "border-primary bg-primary/8 shadow-sm"
-                    : "border-border/30 bg-white/40 dark:bg-white/5"
-                } hover:border-primary/50 hover:shadow-md`}
-              >
-                <RadioGroupItem value="crypto" id="crypto" className="sr-only" />
-                <p className="text-xs sm:text-sm font-semibold text-foreground">Crypto</p>
-              </label>
+            {/* Your Details */}
+            <div className="space-y-4">
+              <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Your Details</p>
+              <div className="grid grid-cols-2 gap-3">
+                <Input placeholder="First Name" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-first-name" />
+                <Input placeholder="Last Name" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-last-name" />
+              </div>
+              <Input placeholder="Email" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-email" />
+              <Input placeholder="Phone Number" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-phone" />
+            </div>
 
-              <label
-                htmlFor="apple"
-                className={`relative flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-300 cursor-pointer border-2 ${
-                  selectedPaymentMethod === "apple"
-                    ? "border-primary bg-primary/8 shadow-sm"
-                    : "border-border/30 bg-white/40 dark:bg-white/5"
-                } hover:border-primary/50 hover:shadow-md`}
-              >
-                <RadioGroupItem value="apple" id="apple" className="sr-only" />
-                <p className="text-xs sm:text-sm font-semibold text-foreground">Apple Pay</p>
-              </label>
+            {/* Payment Details */}
+            <div className="space-y-4">
+              <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Payment Details</p>
+              <Input placeholder="Card Number" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-card-number" />
+              <div className="grid grid-cols-2 gap-3">
+                <Input placeholder="Expiry" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-card-expiry" />
+                <Input placeholder="CVC" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-card-cvc" />
+              </div>
+            </div>
 
-              <label
-                htmlFor="samsung"
-                className={`relative flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-300 cursor-pointer border-2 ${
-                  selectedPaymentMethod === "samsung"
-                    ? "border-primary bg-primary/8 shadow-sm"
-                    : "border-border/30 bg-white/40 dark:bg-white/5"
-                } hover:border-primary/50 hover:shadow-md`}
-              >
-                <RadioGroupItem value="samsung" id="samsung" className="sr-only" />
-                <p className="text-xs sm:text-sm font-semibold text-foreground">Samsung Pay</p>
-              </label>
-
-              <label
-                htmlFor="card"
-                className={`relative flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-300 cursor-pointer border-2 ${
-                  selectedPaymentMethod === "card"
-                    ? "border-primary bg-primary/8 shadow-sm"
-                    : "border-border/30 bg-white/40 dark:bg-white/5"
-                } hover:border-primary/50 hover:shadow-md`}
-              >
-                <RadioGroupItem value="card" id="card" className="sr-only" />
-                <p className="text-xs sm:text-sm font-semibold text-foreground">Card</p>
-              </label>
-            </RadioGroup>
-
-            {selectedPaymentMethod === "crypto" ? (
-              <Link href={`/pay/${invoiceIdValue}`}>
-                <Button
-                  className="w-full bg-black hover:bg-black/90 text-white h-10 text-xs sm:text-sm font-semibold transition-all duration-300"
-                  data-testid="button-pay-method"
-                >
-                  PAY WITH CRYPTO
-                </Button>
-              </Link>
-            ) : (
-              <Button
-                className="w-full bg-black hover:bg-black/90 text-white h-10 text-xs sm:text-sm font-semibold transition-all duration-300"
-                data-testid="button-pay-method"
-              >
-                PAY WITH {selectedPaymentMethod === "apple" ? "APPLE PAY" : selectedPaymentMethod === "samsung" ? "SAMSUNG PAY" : "CARD"}
+            <div className="space-y-4">
+              <p className="text-[8px] text-center text-muted-foreground leading-relaxed px-4">
+                By completing this purchase, you are agreeing to the <span className="underline">terms and conditions</span> and <span className="underline">returns & refunds policy</span> of this transaction. This experience is powered by <span className="text-[#A020F0] font-bold">Simplebit.</span>
+              </p>
+              <Button className="w-full bg-[#A020F0] hover:bg-[#8A1BD1] text-white h-14 text-lg font-bold rounded-xl" data-testid="button-place-order">
+                Place Order
               </Button>
-            )}
-
-            <p className="text-[10px] text-muted-foreground text-center">
-              By clicking on pay you agree with SimpleBit's terms of use
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Share Section */}
-        <div className="grid grid-cols-2 gap-3">
-          <Button
-            variant="outline"
-            className="w-full border-2 h-9 sm:h-10 gap-2 text-[10px] sm:text-sm"
-            onClick={handleCopyLink}
-            data-testid="button-copy-link"
-          >
-            <Copy className="h-3.5 w-3.5" /> {copiedLink ? "Copied" : "Copy Link"}
-          </Button>
-          <Button
-            variant="outline"
-            className="w-full border-2 h-9 sm:h-10 gap-2 text-[10px] sm:text-sm"
-            data-testid="button-share-invoice"
-          >
-            <Share2 className="h-3.5 w-3.5" /> Share
-          </Button>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Footer */}
-        <p className="text-[10px] text-muted-foreground text-center pb-8">
-          Powered by SimpleBit
-        </p>
-      </main>
+      <SplitPaymentModal isOpen={splitModalOpen} onClose={() => setSplitModalOpen(false)} maxAmount={amountToPay} />
+      <AddTipModal isOpen={tipModalOpen} onClose={() => setTipModalOpen(false)} onAdd={(amount) => console.log('Tip added:', amount)} />
+    </div>
+  );
+}
 
-      <SplitPaymentModal
-        isOpen={splitModalOpen}
-        onClose={() => setSplitModalOpen(false)}
-        maxAmount={youPay}
-      />
+function InvoiceSummary({ items, orderTotal, taxVat, customerOrderTotal, paidByCustomer, outstandingBalance }: any) {
+  return (
+    <div className="space-y-4">
+      <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Invoice Summary</p>
+      <div className="space-y-3">
+        {items.map((item: any, idx: number) => (
+          <div key={idx} className="flex justify-between text-sm">
+            <span className="text-muted-foreground">{item.name} <span className="text-xs">x{item.qty}</span></span>
+            <span className="font-bold">AED {item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+          </div>
+        ))}
+      </div>
+      <div className="pt-4 border-t border-border/5 space-y-2">
+        <div className="flex justify-between text-xs">
+          <span className="text-muted-foreground">Order Total</span>
+          <span className="font-medium">AED {orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        </div>
+        <div className="flex justify-between text-xs">
+          <span className="text-muted-foreground">Tax/VAT</span>
+          <span className="font-medium">AED {taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        </div>
+        <div className="flex justify-between text-sm font-bold pt-1">
+          <span>Customer Order Total</span>
+          <span>AED {customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        </div>
+      </div>
+      <div className="pt-4 space-y-2">
+        <div className="flex justify-between text-xs">
+          <span className="text-muted-foreground">Paid by Customer</span>
+          <span className="font-medium">AED {paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        </div>
+        <div className="flex justify-between text-sm font-bold text-[#A020F0]">
+          <span>Outstanding Balance</span>
+          <span>AED {outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        </div>
+      </div>
     </div>
   );
 }
