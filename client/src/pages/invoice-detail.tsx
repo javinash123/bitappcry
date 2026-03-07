@@ -232,11 +232,11 @@ export default function InvoiceDetail() {
             <div className="space-y-4">
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="grid grid-cols-2 gap-3">
-                <Button className="bg-black hover:bg-black/90 text-white h-20 md:h-24 gap-2 flex items-center justify-center p-0 overflow-hidden" data-testid="button-apple-pay">
-                  <img src="/apple-pay-logo.svg" alt="Apple Pay" className="h-full w-full object-contain" />
+                <Button className="bg-black hover:bg-black/80 text-white h-14 md:h-16 gap-2 flex items-center justify-center font-semibold rounded-lg transition-colors" data-testid="button-apple-pay">
+                  Apple Pay
                 </Button>
-                <Button className="bg-black hover:bg-black/90 text-white h-20 md:h-24 gap-2 flex items-center justify-center p-0 overflow-hidden" data-testid="button-google-pay">
-                  <img src="/google-pay-logo.svg" alt="Google Pay" className="h-full w-full object-contain" />
+                <Button className="bg-[#5F6368] hover:bg-[#4F6368] text-white h-14 md:h-16 gap-2 flex items-center justify-center font-semibold rounded-lg transition-colors" data-testid="button-google-pay">
+                  Google Pay
                 </Button>
               </div>
             </div>

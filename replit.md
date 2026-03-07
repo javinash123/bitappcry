@@ -79,6 +79,26 @@ Preferred communication style: Simple, everyday language.
 - **Google Fonts**: Inter and Plus Jakarta Sans loaded via CDN
 
 ### Deployment
-- Configured for subdirectory deployment at `/simplebit/`
-- Build outputs to `dist/public` for static serving
-- Apache/Nginx deployment guide included in `deployment/` folder
+
+#### AWS EC2 Apache Deployment (Current)
+- **Deployment Path**: `/var/www/html/simplebitmerchant/`
+- **URL**: `http://3.208.52.220/simplebitmerchant/`
+- **Base Path**: `/simplebitmerchant/` (configured in vite.config.ts)
+- **Web Server**: Apache with mod_rewrite enabled
+- **Key Configuration**: .htaccess file in deployment root handles SPA routing
+
+#### Build & Deployment Process
+1. Build command: `NODE_ENV=production npm run build`
+2. Output location: `dist/public/` (includes all static assets and .htaccess)
+3. Deploy to EC2: `scp -r dist/public/* ec2-user@IP:/var/www/html/simplebitmerchant/`
+4. Verify: No 404 errors on subdirectory routes (Apache rewrites to index.html)
+
+#### .htaccess Rewrite Rules
+- Enables mod_rewrite for SPA routing
+- Redirects all non-file/non-directory requests to index.html
+- Preserves direct asset access (CSS, JS, images)
+- Essential for single-page app functioning in subdirectory
+
+#### Deployment Guides
+- `deployment/AWS_EC2_DEPLOYMENT_GUIDE.md` - Comprehensive setup guide (one-time setup + troubleshooting)
+- `deployment/DEPLOYMENT_CHECKLIST.md` - Quick reference checklist for deployments
