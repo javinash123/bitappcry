@@ -18,7 +18,6 @@ import {
   CreditCard,
   Copy,
   Download,
-  Languages,
 } from "lucide-react";
 import { SiApplepay, SiGooglepay } from "react-icons/si";
 
@@ -143,8 +142,8 @@ export default function InvoiceDetail() {
   const outstandingBalance = 2625.00;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] dark:bg-background font-sans p-4 md:p-8">
-      <div className="max-w-6xl mx-auto bg-white dark:bg-card rounded-xl shadow-sm border border-border/40 overflow-hidden">
+    <div className="min-h-screen bg-[#F8F9FA] dark:bg-background font-sans p-4 md:p-8 flex flex-col">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-card rounded-xl shadow-sm border border-border/40 overflow-hidden flex flex-col flex-1">
         {/* Header */}
         <div className="p-6 flex justify-between items-start border-b border-border/10">
           <div className="flex items-center gap-4">
@@ -164,7 +163,7 @@ export default function InvoiceDetail() {
           </button>
         </div>
 
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row flex-1">
           {/* Left Column: Summary & Actions */}
           <div className="flex-1 p-6 space-y-6 md:border-r border-border/10">
             {/* Amount Display */}
@@ -207,7 +206,7 @@ export default function InvoiceDetail() {
 
             {/* QR Section (Desktop) */}
             <div className="hidden md:block pt-8 border-t border-border/10">
-              <p className="font-bold text-foreground mb-4">Pay from another device</p>
+              <p className="text-base font-bold text-foreground mb-4 uppercase">PAY FROM ANOTHER DEVICE</p>
               <div className="flex items-center gap-6">
                 <div className="p-2 border border-border/20 rounded-lg bg-white">
                   {/* Placeholder for QR Code */}
@@ -217,10 +216,10 @@ export default function InvoiceDetail() {
                 </div>
                 <div className="space-y-3 flex-1">
                   <p className="text-xs text-muted-foreground">Scan to open invoice</p>
-                  <Button variant="outline" className="w-full justify-start gap-2 h-10 text-xs font-semibold" data-testid="button-copy-link">
+                  <Button variant="outline" className="w-full justify-start gap-2 h-10 text-xs font-semibold hover:bg-[#A020F0] hover:text-white hover:border-[#A020F0] transition-colors" data-testid="button-copy-link">
                     <Copy className="w-4 h-4" /> Copy link
                   </Button>
-                  <Button variant="outline" className="w-full justify-start gap-2 h-10 text-xs font-semibold" data-testid="button-download-qr">
+                  <Button variant="outline" className="w-full justify-start gap-2 h-10 text-xs font-semibold hover:bg-[#A020F0] hover:text-white hover:border-[#A020F0] transition-colors" data-testid="button-download-qr">
                     <Download className="w-4 h-4" /> Download QR
                   </Button>
                 </div>
@@ -229,23 +228,23 @@ export default function InvoiceDetail() {
           </div>
 
           {/* Right Column: Checkout Form */}
-          <div className="flex-1 p-6 space-y-8">
+          <div className="flex-1 p-6 space-y-8 pb-32 md:pb-8 flex flex-col">
             {/* Express Checkout */}
             <div className="space-y-4">
-              <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Express Checkout</p>
+              <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="grid grid-cols-2 gap-3">
-                <Button className="bg-black hover:bg-black/90 text-white h-12 gap-2" data-testid="button-apple-pay">
-                  <SiApplepay className="w-10 h-10" /> Pay
+                <Button className="bg-black hover:bg-black/90 text-white h-16 gap-2 flex items-center justify-center" data-testid="button-apple-pay">
+                  <SiApplepay className="w-8 h-8" />
                 </Button>
-                <Button className="bg-black hover:bg-black/90 text-white h-12 gap-2" data-testid="button-google-pay">
-                  <SiGooglepay className="w-10 h-10" /> Pay
+                <Button className="bg-black hover:bg-black/90 text-white h-16 gap-2 flex items-center justify-center" data-testid="button-google-pay">
+                  <SiGooglepay className="w-8 h-8" />
                 </Button>
               </div>
             </div>
 
             {/* Payment Method */}
             <div className="space-y-4">
-              <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Payment Method</p>
+              <p className="text-base font-bold text-foreground uppercase">PAYMENT METHOD</p>
               <div className="bg-[#F8F9FA] dark:bg-muted/30 p-4 rounded-lg flex items-center justify-between">
                 <span className="text-sm font-medium">Card</span>
               </div>
@@ -253,7 +252,7 @@ export default function InvoiceDetail() {
 
             {/* Your Details */}
             <div className="space-y-4">
-              <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Your Details</p>
+              <p className="text-base font-bold text-foreground uppercase">YOUR DETAILS</p>
               <div className="grid grid-cols-2 gap-3">
                 <Input placeholder="First Name" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-first-name" />
                 <Input placeholder="Last Name" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-last-name" />
@@ -263,25 +262,43 @@ export default function InvoiceDetail() {
             </div>
 
             {/* Payment Details */}
-            <div className="space-y-4">
-              <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Payment Details</p>
-              <Input placeholder="Card Number" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-card-number" />
+            <div className="space-y-4 flex-1">
+              <p className="text-base font-bold text-foreground uppercase">PAYMENT DETAILS</p>
+              <div className="relative">
+                <Input 
+                  placeholder="Card Number" 
+                  className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12 pl-10" 
+                  data-testid="input-card-number" 
+                />
+                <CreditCard className="absolute left-3 top-3 w-6 h-6 text-muted-foreground" />
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <Input placeholder="Expiry" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-card-expiry" />
                 <Input placeholder="CVC" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-card-cvc" />
               </div>
-            </div>
 
-            <div className="space-y-4">
-              <p className="text-[8px] text-center text-muted-foreground leading-relaxed px-4">
-                By completing this purchase, you are agreeing to the <span className="underline">terms and conditions</span> and <span className="underline">returns & refunds policy</span> of this transaction. This experience is powered by <span className="text-[#A020F0] font-bold">Simplebit.</span>
-              </p>
-              <Button className="w-full bg-[#A020F0] hover:bg-[#8A1BD1] text-white h-14 text-lg font-bold rounded-xl" data-testid="button-place-order">
-                Place Order
-              </Button>
+              <div className="space-y-4 pt-4">
+                <p className="text-[8px] text-center text-muted-foreground leading-relaxed px-4">
+                  By completing this purchase, you are agreeing to the <span className="underline">terms and conditions</span> and <span className="underline">returns & refunds policy</span> of this transaction. This experience is powered by <span className="text-[#A020F0] font-bold">Simplebit.</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Sticky Place Order Button - Mobile */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-card border-t border-border/10 p-4 flex justify-center">
+        <Button className="w-full max-w-sm bg-[#A020F0] hover:bg-[#8A1BD1] text-white h-14 text-lg font-bold rounded-xl" data-testid="button-place-order">
+          Place Order
+        </Button>
+      </div>
+
+      {/* Sticky Place Order Button - Desktop */}
+      <div className="hidden md:block fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+        <Button className="bg-[#A020F0] hover:bg-[#8A1BD1] text-white px-16 h-14 text-lg font-bold rounded-xl" data-testid="button-place-order-sticky">
+          Place Order
+        </Button>
       </div>
 
       <SplitPaymentModal isOpen={splitModalOpen} onClose={() => setSplitModalOpen(false)} maxAmount={amountToPay} />
@@ -293,37 +310,37 @@ export default function InvoiceDetail() {
 function InvoiceSummary({ items, orderTotal, taxVat, customerOrderTotal, paidByCustomer, outstandingBalance }: any) {
   return (
     <div className="space-y-4">
-      <p className="text-[10px] font-black tracking-wider uppercase text-foreground">Invoice Summary</p>
+      <p className="text-base font-bold text-foreground uppercase">INVOICE SUMMARY</p>
       <div className="space-y-3">
         {items.map((item: any, idx: number) => (
-          <div key={idx} className="flex justify-between text-sm">
-            <span className="text-muted-foreground">{item.name} <span className="text-xs">x{item.qty}</span></span>
-            <span className="font-bold">AED {item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+          <div key={idx} className="flex justify-between items-start text-sm">
+            <span className="text-muted-foreground flex-1">{item.name} <span className="text-xs">x{item.qty}</span></span>
+            <span className="font-bold text-right">AED {item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
           </div>
         ))}
       </div>
       <div className="pt-4 border-t border-border/5 space-y-2">
-        <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground">Order Total</span>
-          <span className="font-medium">AED {orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex justify-between items-start text-xs">
+          <span className="text-muted-foreground flex-1">Order Total</span>
+          <span className="font-medium text-right">AED {orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground">Tax/VAT</span>
-          <span className="font-medium">AED {taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex justify-between items-start text-xs">
+          <span className="text-muted-foreground flex-1">Tax/VAT</span>
+          <span className="font-medium text-right">AED {taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between text-sm font-bold pt-1">
-          <span>Customer Order Total</span>
-          <span>AED {customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex justify-between items-start text-sm font-bold pt-1">
+          <span className="flex-1">CUSTOMER ORDER TOTAL</span>
+          <span className="text-right">AED {customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
       <div className="pt-4 space-y-2">
-        <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground">Paid by Customer</span>
-          <span className="font-medium">AED {paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex justify-between items-start text-xs">
+          <span className="text-muted-foreground flex-1">Paid by Customer</span>
+          <span className="font-medium text-right">AED {paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between text-sm font-bold text-[#A020F0]">
-          <span>Outstanding Balance</span>
-          <span>AED {outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex justify-between items-start text-sm font-bold text-[#A020F0]">
+          <span className="flex-1">OUTSTANDING BALANCE</span>
+          <span className="text-right">AED {outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
     </div>
