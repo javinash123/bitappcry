@@ -84,7 +84,7 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
             <Button variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
-            <Button onClick={handleContinue} className="flex-1">
+            <Button onClick={handleContinue} className="flex-1 bg-[#A020F0] hover:bg-[#8A1BD1] text-white">
               Continue
             </Button>
           </div>
@@ -114,7 +114,7 @@ function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () 
             <Label>Custom Amount (AED)</Label>
             <Input type="number" value={tipAmount} onChange={(e) => setTipAmount(e.target.value)} placeholder="0.00" />
           </div>
-          <Button className="w-full" onClick={() => { onAdd(Number(tipAmount)); onClose(); }}>Add Tip</Button>
+          <Button className="w-full bg-[#A020F0] hover:bg-[#8A1BD1] text-white" onClick={() => { onAdd(Number(tipAmount)); onClose(); }}>Add Tip</Button>
         </div>
       </DialogContent>
     </Dialog>
@@ -142,10 +142,10 @@ export default function InvoiceDetail() {
   const outstandingBalance = 2625.00;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] dark:bg-background font-sans p-4 md:p-8 flex flex-col">
-      <div className="max-w-6xl mx-auto bg-white dark:bg-card rounded-xl shadow-sm border border-border/40 overflow-hidden flex flex-col flex-1">
+    <div className="min-h-screen bg-white md:bg-[#F8F9FA] dark:bg-background font-sans p-0 md:p-8 flex flex-col">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-card md:rounded-xl md:shadow-sm md:border md:border-border/40 overflow-hidden flex flex-col flex-1">
         {/* Header */}
-        <div className="p-6 flex justify-between items-start border-b border-border/10">
+        <div className="p-4 md:p-6 flex justify-between items-start border-b border-border/10">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-[#8B734B] rounded flex items-center justify-center text-white text-3xl font-bold">
               R
@@ -165,9 +165,9 @@ export default function InvoiceDetail() {
 
         <div className="flex flex-col md:flex-row flex-1">
           {/* Left Column: Summary & Actions */}
-          <div className="flex-1 p-6 space-y-6 md:border-r border-border/10">
+          <div className="flex-1 p-4 md:p-6 space-y-4 md:space-y-6 md:border-r border-border/10">
             {/* Amount Display */}
-            <div className="bg-[#F8F9FA] dark:bg-muted/30 rounded-xl p-8 text-center space-y-2">
+            <div className="bg-[#F8F9FA] dark:bg-muted/30 rounded-xl p-4 md:p-8 text-center space-y-2">
               <p className="text-sm font-medium text-muted-foreground">Amount to Pay:</p>
               <h2 className="text-4xl font-black text-foreground">{currency} {amountToPay.toFixed(2)}</h2>
             </div>
@@ -228,16 +228,16 @@ export default function InvoiceDetail() {
           </div>
 
           {/* Right Column: Checkout Form */}
-          <div className="flex-1 p-6 space-y-8 pb-32 md:pb-8 flex flex-col">
+          <div className="flex-1 p-4 md:p-6 space-y-4 md:space-y-8 pb-32 md:pb-8 flex flex-col">
             {/* Express Checkout */}
             <div className="space-y-4">
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="grid grid-cols-2 gap-3">
-                <Button className="bg-black hover:bg-black/90 text-white h-20 gap-2 flex items-center justify-center" data-testid="button-apple-pay">
-                  <SiApplepay className="w-12 h-12" />
+                <Button className="bg-black hover:bg-black/90 text-white h-20 md:h-24 gap-2 flex items-center justify-center" data-testid="button-apple-pay">
+                  <SiApplepay className="w-16 h-16 md:w-20 md:h-20" />
                 </Button>
-                <Button className="bg-black hover:bg-black/90 text-white h-20 gap-2 flex items-center justify-center" data-testid="button-google-pay">
-                  <SiGooglepay className="w-12 h-12" />
+                <Button className="bg-black hover:bg-black/90 text-white h-20 md:h-24 gap-2 flex items-center justify-center" data-testid="button-google-pay">
+                  <SiGooglepay className="w-16 h-16 md:w-20 md:h-20" />
                 </Button>
               </div>
             </div>
@@ -314,34 +314,34 @@ function InvoiceSummary({ items, orderTotal, taxVat, customerOrderTotal, paidByC
       <p className="text-base font-bold text-foreground uppercase">INVOICE SUMMARY</p>
       <div className="space-y-3">
         {items.map((item: any, idx: number) => (
-          <div key={idx} className="flex justify-between items-start text-sm gap-4">
-            <span className="text-muted-foreground flex-1">{item.name} <span className="text-xs">x{item.qty}</span></span>
-            <span className="font-bold whitespace-nowrap">AED {item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+          <div key={idx} className="flex flex-col text-sm gap-1">
+            <span className="text-muted-foreground">{item.name} <span className="text-xs">x{item.qty}</span></span>
+            <span className="font-bold">AED {item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
           </div>
         ))}
       </div>
       <div className="pt-4 border-t border-border/5 space-y-2">
-        <div className="flex justify-between items-start text-xs gap-4">
-          <span className="text-muted-foreground flex-1">Order Total</span>
-          <span className="font-medium whitespace-nowrap">AED {orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex flex-col text-xs gap-1">
+          <span className="text-muted-foreground">Order Total</span>
+          <span className="font-medium">AED {orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between items-start text-xs gap-4">
-          <span className="text-muted-foreground flex-1">Tax/VAT</span>
-          <span className="font-medium whitespace-nowrap">AED {taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex flex-col text-xs gap-1">
+          <span className="text-muted-foreground">Tax/VAT</span>
+          <span className="font-medium">AED {taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between items-start text-sm font-bold pt-1 gap-4">
-          <span className="flex-1">CUSTOMER ORDER TOTAL</span>
-          <span className="whitespace-nowrap">AED {customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex flex-col text-sm font-bold pt-1 gap-1">
+          <span>CUSTOMER ORDER TOTAL</span>
+          <span>AED {customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
       <div className="pt-4 space-y-2">
-        <div className="flex justify-between items-start text-xs gap-4">
-          <span className="text-muted-foreground flex-1">Paid by Customer</span>
-          <span className="font-medium whitespace-nowrap">AED {paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex flex-col text-xs gap-1">
+          <span className="text-muted-foreground">Paid by Customer</span>
+          <span className="font-medium">AED {paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between items-start text-sm font-bold text-[#A020F0] gap-4">
-          <span className="flex-1">OUTSTANDING BALANCE</span>
-          <span className="whitespace-nowrap">AED {outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="flex flex-col text-sm font-bold text-[#A020F0] gap-1">
+          <span>OUTSTANDING BALANCE</span>
+          <span>AED {outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
     </div>
