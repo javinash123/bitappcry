@@ -111,7 +111,7 @@ function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () 
             ))}
           </div>
           <div className="space-y-2">
-            <Label>Custom Amount</Label>
+            <Label>Custom Amount (AED)</Label>
             <Input type="number" value={tipAmount} onChange={(e) => setTipAmount(e.target.value)} placeholder="0.00" />
           </div>
           <Button className="w-full" onClick={() => { onAdd(Number(tipAmount)); onClose(); }}>Add Tip</Button>
@@ -233,11 +233,11 @@ export default function InvoiceDetail() {
             <div className="space-y-4">
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="grid grid-cols-2 gap-3">
-                <Button className="bg-black hover:bg-black/90 text-white h-16 gap-2 flex items-center justify-center" data-testid="button-apple-pay">
-                  <SiApplepay className="w-8 h-8" />
+                <Button className="bg-black hover:bg-black/90 text-white h-20 gap-2 flex items-center justify-center" data-testid="button-apple-pay">
+                  <SiApplepay className="w-12 h-12" />
                 </Button>
-                <Button className="bg-black hover:bg-black/90 text-white h-16 gap-2 flex items-center justify-center" data-testid="button-google-pay">
-                  <SiGooglepay className="w-8 h-8" />
+                <Button className="bg-black hover:bg-black/90 text-white h-20 gap-2 flex items-center justify-center" data-testid="button-google-pay">
+                  <SiGooglepay className="w-12 h-12" />
                 </Button>
               </div>
             </div>
@@ -267,10 +267,11 @@ export default function InvoiceDetail() {
               <div className="relative">
                 <Input 
                   placeholder="Card Number" 
-                  className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12 pl-10" 
+                  className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12 pl-10 pr-16" 
                   data-testid="input-card-number" 
                 />
                 <CreditCard className="absolute left-3 top-3 w-6 h-6 text-muted-foreground" />
+                <span className="absolute right-4 top-3 text-xs font-semibold text-muted-foreground">VISA</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <Input placeholder="Expiry" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-card-expiry" />
@@ -313,34 +314,34 @@ function InvoiceSummary({ items, orderTotal, taxVat, customerOrderTotal, paidByC
       <p className="text-base font-bold text-foreground uppercase">INVOICE SUMMARY</p>
       <div className="space-y-3">
         {items.map((item: any, idx: number) => (
-          <div key={idx} className="flex justify-between items-start text-sm">
+          <div key={idx} className="flex justify-between items-start text-sm gap-4">
             <span className="text-muted-foreground flex-1">{item.name} <span className="text-xs">x{item.qty}</span></span>
-            <span className="font-bold text-right">AED {item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+            <span className="font-bold whitespace-nowrap">AED {item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
           </div>
         ))}
       </div>
       <div className="pt-4 border-t border-border/5 space-y-2">
-        <div className="flex justify-between items-start text-xs">
+        <div className="flex justify-between items-start text-xs gap-4">
           <span className="text-muted-foreground flex-1">Order Total</span>
-          <span className="font-medium text-right">AED {orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+          <span className="font-medium whitespace-nowrap">AED {orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between items-start text-xs">
+        <div className="flex justify-between items-start text-xs gap-4">
           <span className="text-muted-foreground flex-1">Tax/VAT</span>
-          <span className="font-medium text-right">AED {taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+          <span className="font-medium whitespace-nowrap">AED {taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between items-start text-sm font-bold pt-1">
+        <div className="flex justify-between items-start text-sm font-bold pt-1 gap-4">
           <span className="flex-1">CUSTOMER ORDER TOTAL</span>
-          <span className="text-right">AED {customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+          <span className="whitespace-nowrap">AED {customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
       <div className="pt-4 space-y-2">
-        <div className="flex justify-between items-start text-xs">
+        <div className="flex justify-between items-start text-xs gap-4">
           <span className="text-muted-foreground flex-1">Paid by Customer</span>
-          <span className="font-medium text-right">AED {paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+          <span className="font-medium whitespace-nowrap">AED {paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between items-start text-sm font-bold text-[#A020F0]">
+        <div className="flex justify-between items-start text-sm font-bold text-[#A020F0] gap-4">
           <span className="flex-1">OUTSTANDING BALANCE</span>
-          <span className="text-right">AED {outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+          <span className="whitespace-nowrap">AED {outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
     </div>
