@@ -6,7 +6,7 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { metaImagesPlugin } from "./vite-plugin-meta-images";
 
 export default defineConfig({
-  base: "/simplebitmerchant/",
+  base: process.env.NODE_ENV === "production" ? "/simplebitmerchant/" : "/",
   plugins: [
     react(),
     runtimeErrorOverlay(),
