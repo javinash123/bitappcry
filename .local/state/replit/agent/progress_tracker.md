@@ -25,3 +25,5 @@
 [x] 25. Generate updated production build with all dashboard improvements
 [x] 26. Reorder dashboard components - Revenue Chart now displays first at top of page
 [x] 27. Generate final production build with Revenue Chart positioned first
+[x] 28. Fix tsx not found error by updating npm scripts to use npx tsx
+[x] 29. Restart workflow and verify application launches successfully in Replit environment

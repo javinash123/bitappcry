@@ -19,7 +19,6 @@ import {
   Copy,
   Download,
 } from "lucide-react";
-import { SiApplepay, SiGooglepay } from "react-icons/si";
 
 interface SplitPaymentModalProps {
   isOpen: boolean;
@@ -233,11 +232,11 @@ export default function InvoiceDetail() {
             <div className="space-y-4">
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="grid grid-cols-2 gap-3">
-                <Button className="bg-black hover:bg-black/90 text-white h-20 md:h-24 gap-2 flex items-center justify-center" data-testid="button-apple-pay">
-                  <SiApplepay className="w-16 h-16 md:w-20 md:h-20" />
+                <Button className="bg-black hover:bg-black/90 text-white h-20 md:h-24 gap-2 flex items-center justify-center p-0 overflow-hidden" data-testid="button-apple-pay">
+                  <img src="/apple-pay-logo.svg" alt="Apple Pay" className="h-full w-full object-contain" />
                 </Button>
-                <Button className="bg-black hover:bg-black/90 text-white h-20 md:h-24 gap-2 flex items-center justify-center" data-testid="button-google-pay">
-                  <SiGooglepay className="w-16 h-16 md:w-20 md:h-20" />
+                <Button className="bg-black hover:bg-black/90 text-white h-20 md:h-24 gap-2 flex items-center justify-center p-0 overflow-hidden" data-testid="button-google-pay">
+                  <img src="/google-pay-logo.svg" alt="Google Pay" className="h-full w-full object-contain" />
                 </Button>
               </div>
             </div>
