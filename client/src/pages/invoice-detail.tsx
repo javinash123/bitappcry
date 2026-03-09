@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,6 +21,8 @@ import {
   Download,
 } from "lucide-react";
 import { SiApple, SiGoogle } from "react-icons/si";
+import expressButtonImage from "@assets/expressbutton_1773056777079.jpg";
+import cardLogosImage from "@assets/cardlogos_1773056777082.jpg";
 
 interface SplitPaymentModalProps {
   isOpen: boolean;
@@ -135,6 +137,10 @@ export default function InvoiceDetail() {
   const [splitModalOpen, setSplitModalOpen] = useState(false);
   const [tipModalOpen, setTipModalOpen] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const companyName = "Rent Any Car Dubai";
   const companyId = "7122976";
   const amountToPay = 100.00;
@@ -197,14 +203,16 @@ export default function InvoiceDetail() {
               )}
             </div>
 
-            {/* Split & Tip Buttons */}
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="secondary" className="bg-[#F8F9FA] dark:bg-muted/50 text-foreground hover:bg-muted/70 hover:border-2 hover:border-[#A020F0] h-12 font-semibold border-2 border-transparent transition-colors" onClick={() => setSplitModalOpen(true)} data-testid="button-split-bill">
-                Split Bill
-              </Button>
-              <Button variant="secondary" className="bg-[#F8F9FA] dark:bg-muted/50 text-foreground hover:bg-muted/70 hover:border-2 hover:border-[#A020F0] h-12 font-semibold border-2 border-transparent transition-colors" onClick={() => setTipModalOpen(true)} data-testid="button-add-tip">
-                Add Tip
-              </Button>
+            {/* Split & Tip Buttons - Centered */}
+            <div className="flex justify-center">
+              <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
+                <Button variant="secondary" className="bg-[#F8F9FA] dark:bg-muted/50 text-foreground hover:bg-muted/70 hover:border-2 hover:border-[#A020F0] h-12 font-semibold border-2 border-transparent transition-colors" onClick={() => setSplitModalOpen(true)} data-testid="button-split-bill">
+                  Split Bill
+                </Button>
+                <Button variant="secondary" className="bg-[#F8F9FA] dark:bg-muted/50 text-foreground hover:bg-muted/70 hover:border-2 hover:border-[#A020F0] h-12 font-semibold border-2 border-transparent transition-colors" onClick={() => setTipModalOpen(true)} data-testid="button-add-tip">
+                  Add Tip
+                </Button>
+              </div>
             </div>
 
             {/* Desktop Invoice Summary */}
@@ -240,14 +248,14 @@ export default function InvoiceDetail() {
             {/* Express Checkout */}
             <div className="space-y-4">
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
-              <div className="grid grid-cols-2 gap-3">
-                <Button className="bg-black hover:bg-black/80 text-white h-14 md:h-16 gap-2 flex items-center justify-center font-semibold rounded-lg transition-all border-2 border-transparent hover:border-[#A020F0]" data-testid="button-apple-pay">
-                  <SiApple className="w-5 h-5" />
-                  Apple Pay
+              <div className="space-y-3">
+                <Button className="bg-[#3d4a52] hover:bg-[#2f3a41] text-white w-full h-16 gap-3 flex items-center justify-center font-medium rounded-xl transition-all" data-testid="button-apple-pay">
+                  <SiApple className="w-6 h-6" />
+                  <span>Apple Pay</span>
                 </Button>
-                <Button className="bg-black hover:bg-black/80 text-white h-14 md:h-16 gap-2 flex items-center justify-center font-semibold rounded-lg transition-all border-2 border-transparent hover:border-[#A020F0]" data-testid="button-google-pay">
-                  <SiGoogle className="w-5 h-5" />
-                  Google Pay
+                <Button className="bg-[#3d4a52] hover:bg-[#2f3a41] text-white w-full h-16 gap-3 flex items-center justify-center font-medium rounded-xl transition-all" data-testid="button-google-pay">
+                  <SiGoogle className="w-6 h-6" />
+                  <span>Google Pay</span>
                 </Button>
               </div>
             </div>
@@ -260,9 +268,19 @@ export default function InvoiceDetail() {
                   <RadioGroupItem value="card" id="card-option" />
                   <Label htmlFor="card-option" className="text-sm text-[#7F8589] font-medium cursor-pointer flex-1 m-0">Card</Label>
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-5 bg-[#1434CB] rounded flex items-center justify-center text-white text-[8px] font-bold">VISA</div>
-                    <div className="w-8 h-5 bg-gradient-to-r from-[#FF5F00] to-[#EB001B] rounded flex items-center justify-center text-white text-[7px] font-bold">MC</div>
-                    <div className="w-8 h-5 bg-[#006FCF] rounded flex items-center justify-center text-white text-[7px] font-bold">AMEX</div>
+                    {/* Mastercard Logo */}
+                    <div className="w-10 h-6 border border-gray-300 rounded flex items-center justify-center bg-white relative overflow-hidden">
+                      <div className="absolute left-1 w-3 h-3 bg-[#EB001B] rounded-full"></div>
+                      <div className="absolute left-2.5 w-3 h-3 bg-[#FF5F00] rounded-full"></div>
+                    </div>
+                    {/* Visa Logo */}
+                    <div className="w-10 h-6 border border-gray-300 rounded flex items-center justify-center bg-white">
+                      <span className="text-[#1434CB] text-[10px] font-bold">VISA</span>
+                    </div>
+                    {/* Amex Logo */}
+                    <div className="w-10 h-6 bg-[#006FCF] rounded flex items-center justify-center">
+                      <span className="text-white text-[8px] font-bold">AMEX</span>
+                    </div>
                   </div>
                 </div>
               </RadioGroup>
@@ -331,48 +349,48 @@ function InvoiceSummary({ items, orderTotal, taxVat, customerOrderTotal, paidByC
       <p className="text-base font-bold text-foreground uppercase">INVOICE SUMMARY</p>
       <div className="border-b border-border/10 pb-4 space-y-3">
         {items.map((item: any, idx: number) => (
-          <div key={idx} className="grid grid-cols-12 gap-2 items-center text-sm">
-            <div className="col-span-6 text-foreground">{item.name}</div>
+          <div key={idx} className="grid grid-cols-12 gap-1 items-center text-sm">
+            <div className="col-span-6 text-muted-foreground">{item.name}</div>
             <div className="col-span-2 text-muted-foreground text-xs text-center">x{item.qty}</div>
-            <div className="col-span-2 text-muted-foreground">AED</div>
-            <div className="col-span-2 text-right font-semibold text-foreground">{item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+            <div className="col-span-1 text-muted-foreground">AED</div>
+            <div className="col-span-3 text-right text-muted-foreground">{item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
           </div>
         ))}
       </div>
       <div className="border-b border-border/10 pb-4 space-y-2">
-        <div className="grid grid-cols-12 gap-2 items-center text-sm">
-          <span className="col-span-8 text-muted-foreground">Total</span>
-          <span className="col-span-2 text-muted-foreground">AED</span>
-          <span className="col-span-2 text-right font-semibold text-foreground">{orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-1 items-center text-sm">
+          <span className="col-span-6 text-muted-foreground">Total</span>
+          <span className="col-span-1 text-muted-foreground">AED</span>
+          <span className="col-span-5 text-right text-muted-foreground">{orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="grid grid-cols-12 gap-2 items-center text-sm">
-          <span className="col-span-8 text-muted-foreground">VAT</span>
-          <span className="col-span-2 text-muted-foreground">AED</span>
-          <span className="col-span-2 text-right font-semibold text-foreground">{taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-1 items-center text-sm">
+          <span className="col-span-6 text-muted-foreground">VAT</span>
+          <span className="col-span-1 text-muted-foreground">AED</span>
+          <span className="col-span-5 text-right text-muted-foreground">{taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="grid grid-cols-12 gap-2 items-center text-sm">
-          <span className="col-span-8 text-muted-foreground">Service Fee</span>
-          <span className="col-span-2 text-muted-foreground">AED</span>
-          <span className="col-span-2 text-right font-semibold text-foreground">190.00</span>
+        <div className="grid grid-cols-12 gap-1 items-center text-sm">
+          <span className="col-span-6 text-muted-foreground">Service Fee</span>
+          <span className="col-span-1 text-muted-foreground">AED</span>
+          <span className="col-span-5 text-right text-muted-foreground">190.00</span>
         </div>
       </div>
       <div className="border-b border-border/10 pb-4 space-y-2">
-        <div className="grid grid-cols-12 gap-2 items-center text-sm font-bold">
-          <span className="col-span-8">Grand Total</span>
-          <span className="col-span-2">AED</span>
-          <span className="col-span-2 text-right">{customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-1 items-center text-sm font-bold">
+          <span className="col-span-6 text-foreground">Grand Total</span>
+          <span className="col-span-1 text-foreground">AED</span>
+          <span className="col-span-5 text-right text-foreground">{customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
       <div className="space-y-2">
-        <div className="grid grid-cols-12 gap-2 items-center text-sm">
-          <span className="col-span-8 text-muted-foreground">Paid by Customer</span>
-          <span className="col-span-2 text-muted-foreground">AED</span>
-          <span className="col-span-2 text-right font-semibold text-foreground">{paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-1 items-center text-sm">
+          <span className="col-span-6 text-muted-foreground">Paid by Customer</span>
+          <span className="col-span-1 text-muted-foreground">AED</span>
+          <span className="col-span-5 text-right text-muted-foreground">{paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="grid grid-cols-12 gap-2 items-center text-sm font-bold">
-          <span className="col-span-8 text-foreground">Outstanding Balance</span>
-          <span className="col-span-2 text-[#A020F0]">AED</span>
-          <span className="col-span-2 text-right text-[#A020F0]">{outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-1 items-center text-sm font-bold">
+          <span className="col-span-6 text-foreground">Outstanding Balance</span>
+          <span className="col-span-1 text-[#A020F0]">AED</span>
+          <span className="col-span-5 text-right text-[#A020F0]">{outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
     </div>
