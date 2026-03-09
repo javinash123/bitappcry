@@ -22,8 +22,9 @@ import {
 } from "lucide-react";
 import expressButtonImage from "@assets/expressbutton_1773056777079.jpg";
 import cardLogosImage from "@assets/cardlogos_1773056777082.jpg";
-import googlePayImage from "@assets/gpay_1773065152570.png";
-import applePayImage from "@assets/aapay_1773065152567.png";
+import applePayImage from "@assets/ChatGPT_Image_Mar_10,_2026,_03_34_44_AM_1773094087203.png";
+import googlePayImage from "@assets/ChatGPT_Image_Mar_10,_2026,_03_33_18_AM_1773094087204.png";
+import cardsImage from "@assets/cards_1773094087200.png";
 
 interface SplitPaymentModalProps {
   isOpen: boolean;
@@ -305,16 +306,16 @@ export default function InvoiceDetail() {
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="space-y-3">
                 <button 
-                  className="w-full h-[58px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
+                  className="w-full h-[72px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-google-pay"
                 >
-                  <img src={googlePayImage} alt="Google Pay" className="h-10 w-auto object-contain" />
+                  <img src={googlePayImage} alt="Google Pay" className="h-16 w-auto object-contain" />
                 </button>
                 <button 
-                  className="w-full h-[58px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
+                  className="w-full h-[72px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-apple-pay"
                 >
-                  <img src={applePayImage} alt="Apple Pay" className="h-10 w-auto object-contain" />
+                  <img src={applePayImage} alt="Apple Pay" className="h-16 w-auto object-contain" />
                 </button>
               </div>
             </div>
@@ -323,33 +324,13 @@ export default function InvoiceDetail() {
             <div className="space-y-4">
               <p className="text-base font-bold text-foreground uppercase">PAYMENT METHOD</p>
               <RadioGroup value="card" defaultValue="card">
-                <div className="border-2 border-[#A020F0] bg-[#F8F9FA] dark:bg-muted/30 p-4 rounded-lg flex items-center gap-3 cursor-pointer">
-                  <RadioGroupItem value="card" id="card-option" />
-                  <Label htmlFor="card-option" className="text-sm text-[#7F8589] font-medium cursor-pointer flex-1 m-0">Card</Label>
-                  <div className="flex items-center gap-2">
-                    {/* Mastercard Logo */}
-                    <div className="w-10 h-6 border border-gray-200 rounded flex items-center justify-center bg-white relative overflow-hidden">
-                      <svg viewBox="0 0 24 15" className="h-4 w-auto">
-                        <circle cx="7" cy="7.5" r="7" fill="#EB001B" />
-                        <circle cx="17" cy="7.5" r="7" fill="#F79E1B" />
-                        <path d="M12 7.5c0-2.8 1.4-5.2 3.5-6.7-2.1-1.5-4.6-2.3-7.5-2.3C3.6-.5-.5 3.6-.5 8s4.1 8.5 8.5 8.5c2.9 0 5.4-.8 7.5-2.3-2.1-1.5-3.5-3.9-3.5-6.7z" fill="#EB001B" transform="translate(0,0)" />
-                        <path d="M12 7.5c0 2.8-1.4 5.2-3.5 6.7 2.1 1.5 4.6 2.3 7.5 2.3 4.4 0 8.5-4.1 8.5-8.5S20.4-.5 16-.5c-2.9 0-5.4.8-7.5 2.3 2.1 1.5 3.5 3.9 3.5 6.7z" fill="#F79E1B" transform="translate(0,0)" />
-                        <path d="M12 7.5c0-2.8-1.4-5.2-3.5-6.7 2.1 1.5 2.1 4.9 0 6.7 2.1 1.8 2.1 5.2 0 6.7 2.1-1.5 3.5-3.9 3.5-6.7z" fill="#FF5F00" />
-                      </svg>
-                    </div>
-                    {/* Visa Logo */}
-                    <div className="w-10 h-6 border border-gray-200 rounded flex items-center justify-center bg-white">
-                      <svg viewBox="0 0 24 8" className="h-2.5 w-auto">
-                        <path d="M12.4 0l-1.5 6.8h1.8L14.2 0h-1.8zm6.5 0l-1.4 4.8-.6-3.2c-.1-.8-.8-1.6-1.7-1.6h-2.9v.4c.6.1 1.2.3 1.6.6.4.3.5.7.4 1.2l-1.5 6.2h1.9L17.5 0h1.4zm4.1 0h-1.5c-.5 0-.9.3-1.1.7l-3.2 6.1h1.9l.4-1h2.3l.2 1h1.7L23 0zm-1.8 4.4l.7-2.1.4 2.1h-1.1zM3.4 0L0 6.8h1.9l.7-1.7h2.3l.2 1.7h1.7L4.7 0H3.4zm-.2 3.8l.7-2.1.4 2.1H3.2z" fill="#1A1F71" />
-                      </svg>
-                    </div>
-                    {/* Amex Logo */}
-                    <div className="w-10 h-6 bg-[#007BC1] rounded flex items-center justify-center overflow-hidden">
-                       <svg viewBox="0 0 24 24" className="h-4 w-auto">
-                         <rect width="24" height="24" fill="#007BC1" />
-                         <path d="M4 8h2l1 3 1-3h2v8h-2v-5l-1 3h-1l-1-3v5H4V8zm9 0h5v2h-3v1h3v2h-3v1h3v2h-5V8zm7 0h2l1 2 1-2h2v2l-1 2 1 2v2h-2l-1-2-1 2h-2v-2l1-2-1-2V8z" fill="white" />
-                       </svg>
-                    </div>
+                <div className="border-2 border-[#A020F0] bg-[#F8F9FA] dark:bg-muted/30 p-4 rounded-lg flex-col sm:flex-row flex sm:items-center gap-3 cursor-pointer">
+                  <div className="flex items-center gap-3">
+                    <RadioGroupItem value="card" id="card-option" />
+                    <Label htmlFor="card-option" className="text-sm text-[#7F8589] font-medium cursor-pointer flex-1 m-0 whitespace-nowrap">Card</Label>
+                  </div>
+                  <div className="flex items-center ml-auto">
+                    <img src={cardsImage} alt="Visa, Mastercard, Amex" className="h-10 sm:h-12 w-auto object-contain" />
                   </div>
                 </div>
               </RadioGroup>
@@ -394,14 +375,14 @@ export default function InvoiceDetail() {
 
       {/* Sticky Place Order Button - Mobile */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-card border-t border-border/10 p-4 flex justify-center">
-        <Button className="w-full max-w-sm bg-[#A020F0] hover:bg-[#8A1BD1] text-white h-14 text-lg font-bold rounded-xl" data-testid="button-place-order">
+        <Button className="w-full max-w-sm bg-[#A020F0] hover:bg-[#8A1BD1] text-white h-16 text-xl font-bold rounded-xl" data-testid="button-place-order">
           Place Order
         </Button>
       </div>
 
       {/* Sticky Place Order Button - Desktop */}
       <div className="hidden md:block fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
-        <Button className="bg-[#A020F0] hover:bg-[#8A1BD1] text-white px-16 h-14 text-lg font-bold rounded-xl" data-testid="button-place-order-sticky">
+        <Button className="bg-[#A020F0] hover:bg-[#8A1BD1] text-white px-20 h-16 text-xl font-bold rounded-xl" data-testid="button-place-order-sticky">
           Place Order
         </Button>
       </div>
