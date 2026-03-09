@@ -32,7 +32,7 @@ interface SplitPaymentModalProps {
 }
 
 function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProps) {
-  const [amount, setAmount] = useState<string>("");
+  const [amount, setAmount] = useState<string>("0.00");
   const [errors, setErrors] = useState<string>("");
 
   const handleSelectPercent = (percent: number) => {
@@ -43,19 +43,33 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
+    
+    // Allow empty string or single zero/decimal while typing
+    if (value === "" || value === "0" || value === "0." || value === ".") {
+      setAmount(value);
+      return;
+    }
+
     setAmount(value);
-    if (value && parseFloat(value) > maxAmount) {
-      setErrors(`Amount cannot exceed ${maxAmount.toFixed(2)} AED`);
-    } else if (value && parseFloat(value) <= 0) {
-      setErrors("Amount must be greater than 0");
-    } else {
-      setErrors("");
+    
+    const numericValue = parseFloat(value);
+    if (!isNaN(numericValue)) {
+      if (numericValue > maxAmount) {
+        setErrors(`Amount cannot exceed ${maxAmount.toFixed(2)} AED`);
+      } else if (numericValue <= 0) {
+        setErrors("Amount must be greater than 0");
+      } else {
+        setErrors("");
+      }
     }
   };
 
   const handleBlur = () => {
-    if (amount && !isNaN(parseFloat(amount))) {
-      setAmount(parseFloat(amount).toFixed(2));
+    const numericValue = parseFloat(amount);
+    if (!isNaN(numericValue)) {
+      setAmount(numericValue.toFixed(2));
+    } else {
+      setAmount("0.00");
     }
   };
 
@@ -116,12 +130,24 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
 }
 
 function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void; onAdd: (amount: number) => void }) {
-  const [tipAmount, setTipAmount] = useState("");
+  const [tipAmount, setTipAmount] = useState("0.00");
 
   const handleBlur = () => {
-    if (tipAmount && !isNaN(parseFloat(tipAmount))) {
-      setTipAmount(parseFloat(tipAmount).toFixed(2));
+    const numericValue = parseFloat(tipAmount);
+    if (!isNaN(numericValue)) {
+      setTipAmount(numericValue.toFixed(2));
+    } else {
+      setTipAmount("0.00");
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === "" || value === "0" || value === "0." || value === ".") {
+      setTipAmount(value);
+      return;
+    }
+    setTipAmount(value);
   };
 
   return (
@@ -146,7 +172,7 @@ function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () 
                 type="number" 
                 step="0.01"
                 value={tipAmount} 
-                onChange={(e) => setTipAmount(e.target.value)} 
+                onChange={handleInputChange} 
                 onBlur={handleBlur}
                 placeholder="0.00" 
                 className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-left flex-1" 
@@ -282,13 +308,13 @@ export default function InvoiceDetail() {
                   className="w-full h-[58px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-google-pay"
                 >
-                  <img src={googlePayImage} alt="Google Pay" className="h-8 object-contain" />
+                  <img src={googlePayImage} alt="Google Pay" className="h-10 w-auto object-contain" />
                 </button>
                 <button 
                   className="w-full h-[58px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-apple-pay"
                 >
-                  <img src={applePayImage} alt="Apple Pay" className="h-8 object-contain" />
+                  <img src={applePayImage} alt="Apple Pay" className="h-10 w-auto object-contain" />
                 </button>
               </div>
             </div>
@@ -302,17 +328,27 @@ export default function InvoiceDetail() {
                   <Label htmlFor="card-option" className="text-sm text-[#7F8589] font-medium cursor-pointer flex-1 m-0">Card</Label>
                   <div className="flex items-center gap-2">
                     {/* Mastercard Logo */}
-                    <div className="w-10 h-6 border border-gray-300 rounded flex items-center justify-center bg-white relative overflow-hidden">
-                      <div className="absolute left-1 w-3 h-3 bg-[#EB001B] rounded-full"></div>
-                      <div className="absolute left-2.5 w-3 h-3 bg-[#FF5F00] rounded-full"></div>
+                    <div className="w-10 h-6 border border-gray-200 rounded flex items-center justify-center bg-white relative overflow-hidden">
+                      <svg viewBox="0 0 24 15" className="h-4 w-auto">
+                        <circle cx="7" cy="7.5" r="7" fill="#EB001B" />
+                        <circle cx="17" cy="7.5" r="7" fill="#F79E1B" />
+                        <path d="M12 7.5c0-2.8 1.4-5.2 3.5-6.7-2.1-1.5-4.6-2.3-7.5-2.3C3.6-.5-.5 3.6-.5 8s4.1 8.5 8.5 8.5c2.9 0 5.4-.8 7.5-2.3-2.1-1.5-3.5-3.9-3.5-6.7z" fill="#EB001B" transform="translate(0,0)" />
+                        <path d="M12 7.5c0 2.8-1.4 5.2-3.5 6.7 2.1 1.5 4.6 2.3 7.5 2.3 4.4 0 8.5-4.1 8.5-8.5S20.4-.5 16-.5c-2.9 0-5.4.8-7.5 2.3 2.1 1.5 3.5 3.9 3.5 6.7z" fill="#F79E1B" transform="translate(0,0)" />
+                        <path d="M12 7.5c0-2.8-1.4-5.2-3.5-6.7 2.1 1.5 2.1 4.9 0 6.7 2.1 1.8 2.1 5.2 0 6.7 2.1-1.5 3.5-3.9 3.5-6.7z" fill="#FF5F00" />
+                      </svg>
                     </div>
                     {/* Visa Logo */}
-                    <div className="w-10 h-6 border border-gray-300 rounded flex items-center justify-center bg-white">
-                      <span className="text-[#1434CB] text-[10px] font-bold">VISA</span>
+                    <div className="w-10 h-6 border border-gray-200 rounded flex items-center justify-center bg-white">
+                      <svg viewBox="0 0 24 8" className="h-2.5 w-auto">
+                        <path d="M12.4 0l-1.5 6.8h1.8L14.2 0h-1.8zm6.5 0l-1.4 4.8-.6-3.2c-.1-.8-.8-1.6-1.7-1.6h-2.9v.4c.6.1 1.2.3 1.6.6.4.3.5.7.4 1.2l-1.5 6.2h1.9L17.5 0h1.4zm4.1 0h-1.5c-.5 0-.9.3-1.1.7l-3.2 6.1h1.9l.4-1h2.3l.2 1h1.7L23 0zm-1.8 4.4l.7-2.1.4 2.1h-1.1zM3.4 0L0 6.8h1.9l.7-1.7h2.3l.2 1.7h1.7L4.7 0H3.4zm-.2 3.8l.7-2.1.4 2.1H3.2z" fill="#1A1F71" />
+                      </svg>
                     </div>
                     {/* Amex Logo */}
-                    <div className="w-10 h-6 bg-[#006FCF] rounded flex items-center justify-center">
-                      <span className="text-white text-[8px] font-bold">AMEX</span>
+                    <div className="w-10 h-6 bg-[#007BC1] rounded flex items-center justify-center overflow-hidden">
+                       <svg viewBox="0 0 24 24" className="h-4 w-auto">
+                         <rect width="24" height="24" fill="#007BC1" />
+                         <path d="M4 8h2l1 3 1-3h2v8h-2v-5l-1 3h-1l-1-3v5H4V8zm9 0h5v2h-3v1h3v2h-3v1h3v2h-5V8zm7 0h2l1 2 1-2h2v2l-1 2 1 2v2h-2l-1-2-1 2h-2v-2l1-2-1-2V8z" fill="white" />
+                       </svg>
                     </div>
                   </div>
                 </div>
