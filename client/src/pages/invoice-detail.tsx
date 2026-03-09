@@ -20,9 +20,10 @@ import {
   Copy,
   Download,
 } from "lucide-react";
-import { SiApple, SiGoogle } from "react-icons/si";
 import expressButtonImage from "@assets/expressbutton_1773056777079.jpg";
 import cardLogosImage from "@assets/cardlogos_1773056777082.jpg";
+import googlePayImage from "@assets/gpay_1773065152570.png";
+import applePayImage from "@assets/aapay_1773065152567.png";
 
 interface SplitPaymentModalProps {
   isOpen: boolean;
@@ -249,19 +250,20 @@ export default function InvoiceDetail() {
             <div className="space-y-4">
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="space-y-3">
-                <Button className="bg-[#3d4a52] hover:bg-[#2f3a41] text-white w-full py-4 px-6 gap-3 flex items-center justify-center font-semibold rounded-lg transition-all" style={{ height: '56px' }} data-testid="button-google-pay">
-                  <svg className="w-9 h-9 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                    <circle cx="6" cy="8" r="2.5" fill="#EA4335"/>
-                    <circle cx="12" cy="8" r="2.5" fill="#FBBC04"/>
-                    <circle cx="18" cy="8" r="2.5" fill="#34A853"/>
-                    <text x="12" y="18" textAnchor="middle" className="text-white" fill="white" fontSize="10" fontWeight="bold">Pay</text>
-                  </svg>
-                  <span className="text-base font-bold">Google Pay</span>
-                </Button>
-                <Button className="bg-black hover:bg-gray-950 text-white w-full py-4 px-6 gap-3 flex items-center justify-center font-semibold rounded-lg transition-all" style={{ height: '56px' }} data-testid="button-apple-pay">
-                  <SiApple className="w-8 h-8 flex-shrink-0" />
-                  <span className="text-base font-bold">Apple Pay</span>
-                </Button>
+                <button 
+                  className="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[#A020F0] focus:ring-offset-2"
+                  data-testid="button-google-pay"
+                  style={{ minHeight: '64px' }}
+                >
+                  <img src={googlePayImage} alt="Google Pay" className="w-full h-full object-contain" />
+                </button>
+                <button 
+                  className="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[#A020F0] focus:ring-offset-2"
+                  data-testid="button-apple-pay"
+                  style={{ minHeight: '64px' }}
+                >
+                  <img src={applePayImage} alt="Apple Pay" className="w-full h-full object-contain" />
+                </button>
               </div>
             </div>
 
