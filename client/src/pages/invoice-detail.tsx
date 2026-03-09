@@ -251,14 +251,14 @@ export default function InvoiceDetail() {
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="space-y-3">
                 <button 
-                  className="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[#A020F0] focus:ring-offset-2"
+                  className="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-google-pay"
                   style={{ minHeight: '64px' }}
                 >
                   <img src={googlePayImage} alt="Google Pay" className="w-full h-full object-contain" />
                 </button>
                 <button 
-                  className="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[#A020F0] focus:ring-offset-2"
+                  className="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-apple-pay"
                   style={{ minHeight: '64px' }}
                 >
