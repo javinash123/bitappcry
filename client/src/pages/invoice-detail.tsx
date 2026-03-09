@@ -35,20 +35,27 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
   const [amount, setAmount] = useState<string>("");
   const [errors, setErrors] = useState<string>("");
 
-  const handleSelectMax = () => {
-    setAmount(maxAmount.toString());
+  const handleSelectPercent = (percent: number) => {
+    const calculated = (maxAmount * percent / 100).toFixed(2);
+    setAmount(calculated);
     setErrors("");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    let value = e.target.value;
     setAmount(value);
     if (value && parseFloat(value) > maxAmount) {
-      setErrors(`Amount cannot exceed ${maxAmount} AED`);
+      setErrors(`Amount cannot exceed ${maxAmount.toFixed(2)} AED`);
     } else if (value && parseFloat(value) <= 0) {
       setErrors("Amount must be greater than 0");
     } else {
       setErrors("");
+    }
+  };
+
+  const handleBlur = () => {
+    if (amount && !isNaN(parseFloat(amount))) {
+      setAmount(parseFloat(amount).toFixed(2));
     }
   };
 
@@ -58,7 +65,7 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
       return;
     }
     if (errors) return;
-    alert(`Split payment of ${amount} AED initiated`);
+    alert(`Split payment of ${parseFloat(amount).toFixed(2)} AED initiated`);
     setAmount("");
     onClose();
   };
@@ -70,29 +77,35 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
           <DialogTitle>Split Payment</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
+          <div className="grid grid-cols-4 gap-2">
+            {[25, 50, 75, 100].map((percent) => (
+              <Button key={percent} variant="outline" onClick={() => handleSelectPercent(percent)}>
+                {percent}%
+              </Button>
+            ))}
+          </div>
           <div className="space-y-2">
-            <Label htmlFor="split-amount">Enter Amount</Label>
-            <div className="flex items-center border bg-[#F8F9FA] dark:bg-muted/30 rounded-md">
+            <Label htmlFor="split-amount">Custom Amount</Label>
+            <div className="flex items-center border bg-[#F8F9FA] dark:bg-muted/30 rounded-md focus-within:ring-1 focus-within:ring-[#A020F0]">
               <span className="text-sm font-medium text-muted-foreground px-3 py-3 whitespace-nowrap">AED</span>
               <Input
                 id="split-amount"
                 type="number"
+                step="0.01"
                 value={amount}
                 onChange={handleInputChange}
+                onBlur={handleBlur}
                 placeholder="0.00"
                 className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-left flex-1"
               />
             </div>
             {errors && <p className="text-xs text-destructive">{errors}</p>}
           </div>
-          <Button variant="outline" onClick={handleSelectMax} className="w-full">
-            Select Max ({maxAmount} AED)
-          </Button>
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
-            <Button onClick={handleContinue} className="flex-1 bg-[#A020F0] hover:bg-[#8A1BD1] text-white">
+            <Button onClick={handleContinue} className="flex-1 bg-[#A020F0] hover:bg-[#8A1BD1] text-white font-bold">
               Continue
             </Button>
           </div>
@@ -104,6 +117,13 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
 
 function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void; onAdd: (amount: number) => void }) {
   const [tipAmount, setTipAmount] = useState("");
+
+  const handleBlur = () => {
+    if (tipAmount && !isNaN(parseFloat(tipAmount))) {
+      setTipAmount(parseFloat(tipAmount).toFixed(2));
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ backdropFilter: "blur(4px)" }}>
@@ -113,19 +133,27 @@ function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () 
         <div className="space-y-4 py-4">
           <div className="grid grid-cols-3 gap-2">
             {[5, 10, 15].map((percent) => (
-              <Button key={percent} variant="outline" onClick={() => setTipAmount((100 * percent / 100).toString())}>
+              <Button key={percent} variant="outline" onClick={() => setTipAmount((100 * percent / 100).toFixed(2))}>
                 {percent}%
               </Button>
             ))}
           </div>
           <div className="space-y-2">
             <Label>Custom Amount</Label>
-            <div className="flex items-center border bg-[#F8F9FA] dark:bg-muted/30 rounded-md">
+            <div className="flex items-center border bg-[#F8F9FA] dark:bg-muted/30 rounded-md focus-within:ring-1 focus-within:ring-[#A020F0]">
               <span className="text-sm font-medium text-muted-foreground px-3 py-3 whitespace-nowrap">AED</span>
-              <Input type="number" value={tipAmount} onChange={(e) => setTipAmount(e.target.value)} placeholder="0.00" className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-left flex-1" />
+              <Input 
+                type="number" 
+                step="0.01"
+                value={tipAmount} 
+                onChange={(e) => setTipAmount(e.target.value)} 
+                onBlur={handleBlur}
+                placeholder="0.00" 
+                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-left flex-1" 
+              />
             </div>
           </div>
-          <Button className="w-full bg-[#A020F0] hover:bg-[#8A1BD1] text-white" onClick={() => { onAdd(Number(tipAmount)); onClose(); }}>Add Tip</Button>
+          <Button className="w-full bg-[#A020F0] hover:bg-[#8A1BD1] text-white font-bold" onClick={() => { onAdd(Number(tipAmount)); onClose(); }}>Add Tip</Button>
         </div>
       </DialogContent>
     </Dialog>
@@ -206,7 +234,7 @@ export default function InvoiceDetail() {
 
             {/* Split & Tip Buttons - Centered */}
             <div className="flex justify-center">
-              <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
+              <div className="grid grid-cols-2 gap-4 w-full">
                 <Button variant="secondary" className="bg-[#F8F9FA] dark:bg-muted/50 text-foreground hover:bg-muted/70 hover:border-2 hover:border-[#A020F0] h-12 font-semibold border-2 border-transparent transition-colors" onClick={() => setSplitModalOpen(true)} data-testid="button-split-bill">
                   Split Bill
                 </Button>
@@ -251,18 +279,16 @@ export default function InvoiceDetail() {
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="space-y-3">
                 <button 
-                  className="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
+                  className="w-full h-[58px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-google-pay"
-                  style={{ minHeight: '64px' }}
                 >
-                  <img src={googlePayImage} alt="Google Pay" className="w-full h-full object-contain" />
+                  <img src={googlePayImage} alt="Google Pay" className="h-8 object-contain" />
                 </button>
                 <button 
-                  className="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
+                  className="w-full h-[58px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-apple-pay"
-                  style={{ minHeight: '64px' }}
                 >
-                  <img src={applePayImage} alt="Apple Pay" className="w-full h-full object-contain" />
+                  <img src={applePayImage} alt="Apple Pay" className="h-8 object-contain" />
                 </button>
               </div>
             </div>
@@ -354,19 +380,19 @@ function InvoiceSummary({ items, orderTotal, taxVat, customerOrderTotal, paidByC
   return (
     <div className="space-y-4">
       <p className="text-base font-bold text-foreground uppercase">INVOICE SUMMARY</p>
-      <div className="border-b border-border/10 pb-4 space-y-3">
+      <div className="border-b border-gray-300 dark:border-gray-600 pb-4 space-y-3">
         {items.map((item: any, idx: number) => (
           <div key={idx} className="flex justify-between items-center text-sm">
             <div className="text-muted-foreground">{item.name}</div>
             <div className="flex items-center gap-2">
-              <span className="text-muted-foreground text-xs">x{item.qty}</span>
+              <span className="text-muted-foreground text-xs font-bold">X{item.qty}</span>
               <span className="text-muted-foreground">AED</span>
               <span className="text-muted-foreground min-w-16 text-right">{item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
             </div>
           </div>
         ))}
       </div>
-      <div className="border-b border-border/10 pb-4 space-y-2">
+      <div className="border-b border-gray-300 dark:border-gray-600 pb-4 space-y-2">
         <div className="flex justify-between items-center text-sm">
           <span className="text-muted-foreground">Total</span>
           <div className="flex items-center gap-2">
@@ -389,7 +415,7 @@ function InvoiceSummary({ items, orderTotal, taxVat, customerOrderTotal, paidByC
           </div>
         </div>
       </div>
-      <div className="border-b border-border/10 pb-4 space-y-2">
+      <div className="border-b border-gray-300 dark:border-gray-600 pb-4 space-y-2">
         <div className="flex justify-between items-center text-sm font-bold">
           <span className="text-foreground">Grand Total</span>
           <div className="flex items-center gap-2">
