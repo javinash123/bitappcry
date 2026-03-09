@@ -62,7 +62,7 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md translate-y-[-8vh] md:translate-y-0">
         <DialogHeader>
           <DialogTitle>Split Payment</DialogTitle>
         </DialogHeader>
@@ -77,7 +77,7 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
                 value={amount}
                 onChange={handleInputChange}
                 placeholder="0.00"
-                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-right flex-1"
+                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-left flex-1"
               />
             </div>
             {errors && <p className="text-xs text-destructive">{errors}</p>}
@@ -103,7 +103,7 @@ function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () 
   const [tipAmount, setTipAmount] = useState("");
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md translate-y-[-8vh] md:translate-y-0">
         <DialogHeader>
           <DialogTitle>Add Tip</DialogTitle>
         </DialogHeader>
@@ -119,7 +119,7 @@ function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () 
             <Label>Custom Amount</Label>
             <div className="flex items-center border bg-[#F8F9FA] dark:bg-muted/30 rounded-md">
               <span className="text-sm font-medium text-muted-foreground px-3 py-3 whitespace-nowrap">AED</span>
-              <Input type="number" value={tipAmount} onChange={(e) => setTipAmount(e.target.value)} placeholder="0.00" className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-right flex-1" />
+              <Input type="number" value={tipAmount} onChange={(e) => setTipAmount(e.target.value)} placeholder="0.00" className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-left flex-1" />
             </div>
           </div>
           <Button className="w-full bg-[#A020F0] hover:bg-[#8A1BD1] text-white" onClick={() => { onAdd(Number(tipAmount)); onClose(); }}>Add Tip</Button>
