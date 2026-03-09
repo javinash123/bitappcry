@@ -62,7 +62,7 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md translate-y-[-8vh] md:translate-y-0">
+      <DialogContent className="sm:max-w-md translate-y-0 md:translate-y-0">
         <DialogHeader>
           <DialogTitle>Split Payment</DialogTitle>
         </DialogHeader>
@@ -103,7 +103,7 @@ function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () 
   const [tipAmount, setTipAmount] = useState("");
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md translate-y-[-8vh] md:translate-y-0">
+      <DialogContent className="sm:max-w-md translate-y-0 md:translate-y-0">
         <DialogHeader>
           <DialogTitle>Add Tip</DialogTitle>
         </DialogHeader>

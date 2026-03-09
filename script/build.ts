@@ -36,7 +36,7 @@ async function buildAll() {
   await rm("dist", { recursive: true, force: true });
 
   console.log("building client...");
-  await viteBuild({ base: "/simplebit/" });
+  await viteBuild({ base: "/simplebitmerchant/" });
 
   console.log("building server...");
   const pkg = JSON.parse(await readFile("package.json", "utf-8"));
