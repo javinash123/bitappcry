@@ -24,7 +24,7 @@ import expressButtonImage from "@assets/expressbutton_1773056777079.jpg";
 import cardLogosImage from "@assets/cardlogos_1773056777082.jpg";
 import applePayImage from "@assets/ChatGPT_Image_Mar_10,_2026,_03_34_44_AM_1773094087203.png";
 import googlePayImage from "@assets/ChatGPT_Image_Mar_10,_2026,_03_33_18_AM_1773094087204.png";
-import cardsImage from "@assets/cards_1773094087200.png";
+import cardsImage from "@assets/cards_1773097015095.png";
 
 interface SplitPaymentModalProps {
   isOpen: boolean;
@@ -306,16 +306,16 @@ export default function InvoiceDetail() {
               <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
               <div className="space-y-3">
                 <button 
-                  className="w-full h-[72px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
+                  className="w-full h-24 sm:h-28 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-google-pay"
                 >
-                  <img src={googlePayImage} alt="Google Pay" className="h-16 w-auto object-contain" />
+                  <img src={googlePayImage} alt="Google Pay" className="h-20 sm:h-24 w-auto object-contain" />
                 </button>
                 <button 
-                  className="w-full h-[72px] rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
+                  className="w-full h-24 sm:h-28 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
                   data-testid="button-apple-pay"
                 >
-                  <img src={applePayImage} alt="Apple Pay" className="h-16 w-auto object-contain" />
+                  <img src={applePayImage} alt="Apple Pay" className="h-20 sm:h-24 w-auto object-contain" />
                 </button>
               </div>
             </div>
@@ -330,7 +330,7 @@ export default function InvoiceDetail() {
                     <Label htmlFor="card-option" className="text-sm text-[#7F8589] font-medium cursor-pointer flex-1 m-0 whitespace-nowrap">Card</Label>
                   </div>
                   <div className="flex items-center ml-auto">
-                    <img src={cardsImage} alt="Visa, Mastercard, Amex" className="h-10 sm:h-12 w-auto object-contain" />
+                    <img src={cardsImage} alt="Visa, Mastercard, Amex" className="h-14 sm:h-16 w-auto object-contain" />
                   </div>
                 </div>
               </RadioGroup>
