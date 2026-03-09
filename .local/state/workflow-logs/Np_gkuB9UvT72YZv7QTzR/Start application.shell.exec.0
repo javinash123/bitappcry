@@ -1,0 +1,58 @@
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+[1G[0K9:39:15 AM [express] serving on port 5000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m9:42:43 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/invoice-detail.tsx, /src/index.css[22m
+
+
+
+
+
+[1;1H[0J[2m9:42:49 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/invoice-detail.tsx, /src/index.css[22m [33m(x2)[39m
+
+
+
+
+
+
+[1;1H[0J[2m9:42:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/invoice-detail.tsx, /src/index.css[22m [33m(x3)[39m
+
+
+
+
+
+
+
+[1;1H[0J[2m9:43:06 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/invoice-detail.tsx, /src/index.css[22m [33m(x4)[39m

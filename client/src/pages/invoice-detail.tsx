@@ -68,14 +68,18 @@ function SplitPaymentModal({ isOpen, onClose, maxAmount }: SplitPaymentModalProp
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="split-amount">Enter Amount (AED)</Label>
-            <Input
-              id="split-amount"
-              type="number"
-              value={amount}
-              onChange={handleInputChange}
-              placeholder="0.00"
-            />
+            <Label htmlFor="split-amount">Enter Amount</Label>
+            <div className="flex items-center border bg-[#F8F9FA] dark:bg-muted/30 rounded-md">
+              <span className="text-sm font-medium text-muted-foreground px-3 py-3 whitespace-nowrap">AED</span>
+              <Input
+                id="split-amount"
+                type="number"
+                value={amount}
+                onChange={handleInputChange}
+                placeholder="0.00"
+                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-right flex-1"
+              />
+            </div>
             {errors && <p className="text-xs text-destructive">{errors}</p>}
           </div>
           <Button variant="outline" onClick={handleSelectMax} className="w-full">
@@ -112,8 +116,11 @@ function AddTipModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () 
             ))}
           </div>
           <div className="space-y-2">
-            <Label>Custom Amount (AED)</Label>
-            <Input type="number" value={tipAmount} onChange={(e) => setTipAmount(e.target.value)} placeholder="0.00" />
+            <Label>Custom Amount</Label>
+            <div className="flex items-center border bg-[#F8F9FA] dark:bg-muted/30 rounded-md">
+              <span className="text-sm font-medium text-muted-foreground px-3 py-3 whitespace-nowrap">AED</span>
+              <Input type="number" value={tipAmount} onChange={(e) => setTipAmount(e.target.value)} placeholder="0.00" className="border-0 bg-transparent focus-visible:ring-0 focus-visible:outline-none p-3 text-right flex-1" />
+            </div>
           </div>
           <Button className="w-full bg-[#A020F0] hover:bg-[#8A1BD1] text-white" onClick={() => { onAdd(Number(tipAmount)); onClose(); }}>Add Tip</Button>
         </div>
@@ -249,9 +256,14 @@ export default function InvoiceDetail() {
             <div className="space-y-4">
               <p className="text-base font-bold text-foreground uppercase">PAYMENT METHOD</p>
               <RadioGroup value="card" defaultValue="card">
-                <div className="bg-[#F8F9FA] dark:bg-muted/30 p-4 rounded-lg flex items-center gap-3 cursor-pointer">
+                <div className="border-2 border-[#A020F0] bg-[#F8F9FA] dark:bg-muted/30 p-4 rounded-lg flex items-center gap-3 cursor-pointer">
                   <RadioGroupItem value="card" id="card-option" />
                   <Label htmlFor="card-option" className="text-sm text-[#7F8589] font-medium cursor-pointer flex-1 m-0">Card</Label>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-5 bg-[#1434CB] rounded flex items-center justify-center text-white text-[8px] font-bold">VISA</div>
+                    <div className="w-8 h-5 bg-gradient-to-r from-[#FF5F00] to-[#EB001B] rounded flex items-center justify-center text-white text-[7px] font-bold">MC</div>
+                    <div className="w-8 h-5 bg-[#006FCF] rounded flex items-center justify-center text-white text-[7px] font-bold">AMEX</div>
+                  </div>
                 </div>
               </RadioGroup>
             </div>
@@ -273,11 +285,10 @@ export default function InvoiceDetail() {
               <div className="relative">
                 <Input 
                   placeholder="Card Number" 
-                  className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12 pl-10 pr-16" 
+                  className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12 pl-10 pr-4" 
                   data-testid="input-card-number" 
                 />
                 <CreditCard className="absolute left-3 top-3 w-6 h-6 text-muted-foreground" />
-                <span className="absolute right-4 top-3 text-xs font-semibold text-muted-foreground">VISA</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <Input placeholder="Expiry" className="bg-[#F8F9FA] dark:bg-muted/30 border-none h-12" data-testid="input-card-expiry" />
@@ -320,45 +331,48 @@ function InvoiceSummary({ items, orderTotal, taxVat, customerOrderTotal, paidByC
       <p className="text-base font-bold text-foreground uppercase">INVOICE SUMMARY</p>
       <div className="border-b border-border/10 pb-4 space-y-3">
         {items.map((item: any, idx: number) => (
-          <div key={idx} className="flex items-center justify-between text-sm">
-            <div className="flex-1">
-              <span className="text-foreground">{item.name}</span>
-            </div>
-            <span className="text-muted-foreground text-xs px-2">x{item.qty}</span>
-            <div className="text-right min-w-[120px]">
-              <span className="font-semibold text-foreground">AED {item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
-            </div>
+          <div key={idx} className="grid grid-cols-12 gap-2 items-center text-sm">
+            <div className="col-span-6 text-foreground">{item.name}</div>
+            <div className="col-span-2 text-muted-foreground text-xs text-center">x{item.qty}</div>
+            <div className="col-span-2 text-muted-foreground">AED</div>
+            <div className="col-span-2 text-right font-semibold text-foreground">{item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
           </div>
         ))}
       </div>
       <div className="border-b border-border/10 pb-4 space-y-2">
-        <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Total</span>
-          <span className="font-semibold text-foreground">AED {orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-2 items-center text-sm">
+          <span className="col-span-8 text-muted-foreground">Total</span>
+          <span className="col-span-2 text-muted-foreground">AED</span>
+          <span className="col-span-2 text-right font-semibold text-foreground">{orderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">VAT</span>
-          <span className="font-semibold text-foreground">AED {taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-2 items-center text-sm">
+          <span className="col-span-8 text-muted-foreground">VAT</span>
+          <span className="col-span-2 text-muted-foreground">AED</span>
+          <span className="col-span-2 text-right font-semibold text-foreground">{taxVat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Service Fee</span>
-          <span className="font-semibold text-foreground">AED 190.00</span>
+        <div className="grid grid-cols-12 gap-2 items-center text-sm">
+          <span className="col-span-8 text-muted-foreground">Service Fee</span>
+          <span className="col-span-2 text-muted-foreground">AED</span>
+          <span className="col-span-2 text-right font-semibold text-foreground">190.00</span>
         </div>
       </div>
       <div className="border-b border-border/10 pb-4 space-y-2">
-        <div className="flex justify-between text-sm font-bold">
-          <span>Grand Total</span>
-          <span>AED {customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-2 items-center text-sm font-bold">
+          <span className="col-span-8">Grand Total</span>
+          <span className="col-span-2">AED</span>
+          <span className="col-span-2 text-right">{customerOrderTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
       <div className="space-y-2">
-        <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Paid by Customer</span>
-          <span className="font-semibold text-foreground">AED {paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-2 items-center text-sm">
+          <span className="col-span-8 text-muted-foreground">Paid by Customer</span>
+          <span className="col-span-2 text-muted-foreground">AED</span>
+          <span className="col-span-2 text-right font-semibold text-foreground">{paidByCustomer.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
-        <div className="flex justify-between text-sm font-bold">
-          <span className="text-foreground">Outstanding Balance</span>
-          <span className="text-[#A020F0]">AED {outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        <div className="grid grid-cols-12 gap-2 items-center text-sm font-bold">
+          <span className="col-span-8 text-foreground">Outstanding Balance</span>
+          <span className="col-span-2 text-[#A020F0]">AED</span>
+          <span className="col-span-2 text-right text-[#A020F0]">{outstandingBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
         </div>
       </div>
     </div>
