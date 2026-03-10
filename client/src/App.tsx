@@ -23,7 +23,7 @@ import Signup from "@/pages/signup";
 
 function Router() {
   return (
-    <WouterRouter>
+    <WouterRouter base="/simplebitmerchant">
       <Switch>
         <Route path="/" component={Login} />
         <Route path="/login" component={Login} />
