@@ -25,6 +25,9 @@ import cardLogosImage from "@assets/cardlogos_1773056777082.jpg";
 import applePayImage from "@assets/ChatGPT_Image_Mar_10,_2026,_03_34_44_AM_1773094087203.png";
 import googlePayImage from "@assets/ChatGPT_Image_Mar_10,_2026,_03_33_18_AM_1773094087204.png";
 import cardsImage from "@assets/cards_1773097015095.png";
+import visaLogo from "@assets/visa20_1773100930091.jpg";
+import mastercardLogo from "@assets/master20_1773100930090.png";
+import amexLogo from "@assets/amex20_1773100930087.png";
 
 interface SplitPaymentModalProps {
   isOpen: boolean;
@@ -302,35 +305,31 @@ export default function InvoiceDetail() {
           {/* Right Column: Checkout Form */}
           <div className="flex-1 p-4 md:p-6 space-y-4 md:space-y-8 pb-32 md:pb-8 flex flex-col">
             {/* Express Checkout */}
-            <div className="space-y-4">
-              <p className="text-base font-bold text-foreground uppercase">EXPRESS CHECKOUT</p>
-              <div className="space-y-3">
-                <button 
-                  className="w-full h-24 sm:h-28 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
-                  data-testid="button-google-pay"
-                >
-                  <img src={googlePayImage} alt="Google Pay" className="h-20 sm:h-24 w-auto object-contain" />
-                </button>
-                <button 
-                  className="w-full h-24 sm:h-28 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 transition-all hover:border-[#A020F0] focus:outline-none focus:border-[#A020F0]"
-                  data-testid="button-apple-pay"
-                >
-                  <img src={applePayImage} alt="Apple Pay" className="h-20 sm:h-24 w-auto object-contain" />
-                </button>
+            <div className="space-y-2">
+              <p className="text-[10px] font-bold text-foreground uppercase tracking-wider">EXPRESS CHECKOUT</p>
+              <div className="grid grid-cols-2 gap-2">
+                <Button variant="outline" className="h-12 py-0 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:bg-accent/50" data-testid="button-google-pay">
+                  <img src={googlePayImage} alt="Google Pay" className="h-10 w-auto object-contain" />
+                </Button>
+                <Button variant="outline" className="h-12 py-0 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:bg-accent/50" data-testid="button-apple-pay">
+                  <img src={applePayImage} alt="Apple Pay" className="h-10 w-auto object-contain" />
+                </Button>
               </div>
             </div>
 
             {/* Payment Method */}
-            <div className="space-y-4">
-              <p className="text-base font-bold text-foreground uppercase">PAYMENT METHOD</p>
+            <div className="space-y-2">
+              <p className="text-[10px] font-bold text-foreground uppercase tracking-wider">PAYMENT METHOD</p>
               <RadioGroup value="card" defaultValue="card">
-                <div className="border-2 border-[#A020F0] bg-[#F8F9FA] dark:bg-muted/30 p-4 rounded-lg flex-col sm:flex-row flex sm:items-center gap-3 cursor-pointer">
-                  <div className="flex items-center gap-3">
+                <div className="border-2 border-[#A020F0] bg-[#F8F9FA] dark:bg-muted/30 p-2 rounded-lg flex items-center gap-3 cursor-pointer">
+                  <div className="flex items-center gap-2">
                     <RadioGroupItem value="card" id="card-option" />
-                    <Label htmlFor="card-option" className="text-sm text-[#7F8589] font-medium cursor-pointer flex-1 m-0 whitespace-nowrap">Card</Label>
+                    <Label htmlFor="card-option" className="text-[11px] text-[#7F8589] font-medium cursor-pointer m-0 whitespace-nowrap">Card</Label>
                   </div>
-                  <div className="flex items-center ml-auto">
-                    <img src={cardsImage} alt="Visa, Mastercard, Amex" className="h-14 sm:h-16 w-auto object-contain" />
+                  <div className="flex items-center gap-2 ml-auto px-1">
+                    <img src={visaLogo} alt="Visa" className="h-6 w-auto object-contain" />
+                    <img src={mastercardLogo} alt="Mastercard" className="h-6 w-auto object-contain" />
+                    <img src={amexLogo} alt="Amex" className="h-6 w-auto object-contain" />
                   </div>
                 </div>
               </RadioGroup>

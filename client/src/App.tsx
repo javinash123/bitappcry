@@ -23,7 +23,7 @@ import Signup from "@/pages/signup";
 
 function Router() {
   return (
-    <WouterRouter base={import.meta.env.BASE_URL}>
+    <WouterRouter>
       <Switch>
         <Route path="/" component={Login} />
         <Route path="/login" component={Login} />
