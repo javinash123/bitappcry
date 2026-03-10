@@ -88,12 +88,12 @@ export default function Pay() {
 
         {/* Express Checkout */}
         <div className="grid grid-cols-2 gap-2">
-          <Button variant="outline" className="h-7 py-0 flex items-center justify-center border-2 border-border/50 hover:bg-accent/50">
-            <span className="text-blue-600 font-bold italic text-[10px]">PayPal</span>
+          <Button variant="outline" className="h-12 py-0 flex items-center justify-center border-2 border-border/50 hover:border-[#A020F0] hover:bg-accent/50 transition-colors">
+            <span className="text-blue-600 font-bold italic text-sm">PayPal</span>
           </Button>
-          <Button variant="outline" className="h-7 py-0 flex items-center justify-center border-2 border-border/50 hover:bg-accent/50">
+          <Button variant="outline" className="h-12 py-0 flex items-center justify-center border-2 border-border/50 hover:border-[#A020F0] hover:bg-accent/50 transition-colors">
             <div className="flex items-center gap-1">
-              <span className="font-bold text-[10px]">G Pay</span>
+              <span className="font-bold text-sm text-foreground">G Pay</span>
             </div>
           </Button>
         </div>
@@ -112,12 +112,12 @@ export default function Pay() {
                 value={amountInput}
                 onChange={(e) => setAmountInput(e.target.value)}
                 placeholder={totalToPay.toString()}
-                className="flex-1 border-2 border-border/50 focus:border-primary/50 h-7 text-xs"
+                className="flex-1 border-2 border-border/50 focus:border-[#A020F0] h-12 text-sm"
                 data-testid="input-amount-to-pay"
               />
               <Button
                 onClick={handleSelectMax}
-                className="bg-primary hover:bg-primary/90 h-7 px-2 text-[9px] font-semibold"
+                className="bg-primary hover:bg-primary/90 h-12 px-4 text-xs font-semibold"
                 data-testid="button-max-amount"
               >
                 MAX
@@ -140,11 +140,11 @@ export default function Pay() {
                 <label
                   key={crypto.id}
                   htmlFor={crypto.id}
-                  className={`flex items-center gap-2 p-1.5 rounded-lg transition-all duration-300 cursor-pointer border-2 ${
+                  className={`flex items-center gap-2 px-2 h-12 rounded-lg transition-all duration-300 cursor-pointer border-2 ${
                     selectedCrypto === crypto.id
-                      ? "border-primary bg-primary/8"
+                      ? "border-[#A020F0] bg-[#A020F0]/5"
                       : "border-border/30 bg-white/40 dark:bg-white/5"
-                  } hover:border-primary/50`}
+                  } hover:border-[#A020F0]/50`}
                 >
                   <RadioGroupItem value={crypto.id} id={crypto.id} className="sr-only" />
                   <div className="flex-1 min-w-0">

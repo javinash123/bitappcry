@@ -308,11 +308,11 @@ export default function InvoiceDetail() {
             <div className="space-y-2">
               <p className="text-[10px] font-bold text-foreground uppercase tracking-wider">EXPRESS CHECKOUT</p>
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" className="h-12 py-0 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:bg-accent/50" data-testid="button-google-pay">
-                  <img src={googlePayImage} alt="Google Pay" className="h-10 w-auto object-contain" />
+                <Button variant="outline" className="h-12 py-0 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:border-[#A020F0] hover:bg-accent/50 transition-colors" data-testid="button-google-pay">
+                  <img src={googlePayImage} alt="Google Pay" className="h-12 w-auto object-contain scale-125" />
                 </Button>
-                <Button variant="outline" className="h-12 py-0 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:bg-accent/50" data-testid="button-apple-pay">
-                  <img src={applePayImage} alt="Apple Pay" className="h-10 w-auto object-contain" />
+                <Button variant="outline" className="h-12 py-0 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:border-[#A020F0] hover:bg-accent/50 transition-colors" data-testid="button-apple-pay">
+                  <img src={applePayImage} alt="Apple Pay" className="h-12 w-auto object-contain scale-125" />
                 </Button>
               </div>
             </div>
@@ -321,7 +321,7 @@ export default function InvoiceDetail() {
             <div className="space-y-2">
               <p className="text-[10px] font-bold text-foreground uppercase tracking-wider">PAYMENT METHOD</p>
               <RadioGroup value="card" defaultValue="card">
-                <div className="border-2 border-[#A020F0] bg-[#F8F9FA] dark:bg-muted/30 p-2 rounded-lg flex items-center gap-3 cursor-pointer">
+                <div className="border-2 border-[#A020F0] bg-[#F8F9FA] dark:bg-muted/30 h-12 px-2 rounded-lg flex items-center gap-3 cursor-pointer">
                   <div className="flex items-center gap-2">
                     <RadioGroupItem value="card" id="card-option" />
                     <Label htmlFor="card-option" className="text-[11px] text-[#7F8589] font-medium cursor-pointer m-0 whitespace-nowrap">Card</Label>
