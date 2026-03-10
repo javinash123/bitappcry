@@ -307,12 +307,12 @@ export default function InvoiceDetail() {
             {/* Express Checkout */}
             <div className="space-y-2">
               <p className="text-base font-bold text-foreground uppercase tracking-wider">EXPRESS CHECKOUT</p>
-              <div className="flex flex-col gap-2">
-                <Button variant="outline" className="h-14 py-0 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:border-[#A020F0] hover:bg-accent/50 transition-colors" data-testid="button-google-pay">
-                  <img src={googlePayImage} alt="Google Pay" className="h-14 w-auto object-contain" />
+              <div className="flex flex-col gap-3">
+                <Button variant="outline" className="h-14 py-0 px-4 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:border-[#A020F0] hover:bg-accent/50 transition-colors" data-testid="button-google-pay">
+                  <img src={googlePayImage} alt="Google Pay" style={{ height: "230%" }} />
                 </Button>
-                <Button variant="outline" className="h-14 py-0 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:border-[#A020F0] hover:bg-accent/50 transition-colors" data-testid="button-apple-pay">
-                  <img src={applePayImage} alt="Apple Pay" className="h-14 w-auto object-contain" />
+                <Button variant="outline" className="h-14 py-0 px-4 overflow-hidden flex items-center justify-center border-2 border-border/50 hover:border-[#A020F0] hover:bg-accent/50 transition-colors" data-testid="button-apple-pay">
+                  <img src={applePayImage} alt="Apple Pay" style={{ height: "230%", paddingRight: "7%" }} />
                 </Button>
               </div>
             </div>
